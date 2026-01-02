@@ -112,6 +112,7 @@ require_once 'auth_check.php';
 
             <?php if(has_permission('settings')): ?>
             <li><a href="settings.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'settings') !== false ? 'active' : ''; ?>"><i class="fas fa-cogs"></i> Settings</a></li>
+            <li><a href="stats_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'stats') !== false ? 'active' : ''; ?>"><i class="fas fa-chart-bar"></i> Stats Badges</a></li>
             <?php endif; ?>
 
             <?php if(has_permission('manage_users')): ?>

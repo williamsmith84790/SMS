@@ -20,7 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fields = [
         'site_name', 'contact_email', 'contact_phone', 'contact_address',
         'social_facebook', 'social_twitter', 'social_instagram', 'social_linkedin',
-        'footer_about_text', 'header_apply_link', 'footer_copyright_text'
+        'footer_about_text', 'header_apply_link', 'footer_copyright_text',
+        'feature_1_title', 'feature_1_text', 'feature_1_link',
+        'feature_2_title', 'feature_2_text', 'feature_2_link'
     ];
 
     // Logo Upload logic
@@ -82,6 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" id="headerfooter-tab" data-bs-toggle="tab" data-bs-target="#headerfooter" type="button">Header & Footer</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="homefeatures-tab" data-bs-toggle="tab" data-bs-target="#homefeatures" type="button">Home Feature Cards</button>
                         </li>
                     </ul>
 
@@ -160,6 +165,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <span class="input-group-text">&copy; <?php echo date('Y'); ?> [Site Name].</span>
                                     <input type="text" name="footer_copyright_text" class="form-control" value="<?php echo isset($settings['footer_copyright_text']) ? htmlspecialchars($settings['footer_copyright_text']) : 'All Rights Reserved'; ?>">
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Home Feature Cards Tab -->
+                        <div class="tab-pane fade" id="homefeatures">
+                            <h6 class="mb-3 text-primary">Feature Card 1 (Left)</h6>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" name="feature_1_title" class="form-control" value="<?php echo isset($settings['feature_1_title']) ? htmlspecialchars($settings['feature_1_title']) : ''; ?>">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Link (Page Slug or URL)</label>
+                                    <input type="text" name="feature_1_link" class="form-control" value="<?php echo isset($settings['feature_1_link']) ? htmlspecialchars($settings['feature_1_link']) : ''; ?>">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea name="feature_1_text" class="form-control" rows="2"><?php echo isset($settings['feature_1_text']) ? htmlspecialchars($settings['feature_1_text']) : ''; ?></textarea>
+                            </div>
+
+                            <hr>
+
+                            <h6 class="mb-3 text-danger">Feature Card 2 (Right)</h6>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" name="feature_2_title" class="form-control" value="<?php echo isset($settings['feature_2_title']) ? htmlspecialchars($settings['feature_2_title']) : ''; ?>">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Link (Page Slug or URL)</label>
+                                    <input type="text" name="feature_2_link" class="form-control" value="<?php echo isset($settings['feature_2_link']) ? htmlspecialchars($settings['feature_2_link']) : ''; ?>">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea name="feature_2_text" class="form-control" rows="2"><?php echo isset($settings['feature_2_text']) ? htmlspecialchars($settings['feature_2_text']) : ''; ?></textarea>
                             </div>
                         </div>
                     </div>
