@@ -33,6 +33,13 @@ $available_permissions = [
 ];
 
 if ($id) {
+    // Security: Only Super Admin (ID 1) can edit Super Admin (ID 1)
+    if ($id == 1 && $_SESSION['admin_id'] != 1) {
+        echo '<div class="alert alert-danger">You cannot edit the Super Admin account.</div>';
+        require_once 'includes/footer.php';
+        exit;
+    }
+
     $result = $conn->query("SELECT * FROM admins WHERE id = $id");
     if ($result->num_rows) {
         $user = $result->fetch_assoc();

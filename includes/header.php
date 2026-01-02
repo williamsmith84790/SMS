@@ -126,9 +126,9 @@ function render_menu_item($item, $level = 0) {
         a:hover { color: var(--secondary-color); }
 
         /* --- Ticker (Notice Bar) --- */
-        /* Updated: Not full width, contained */
-        .notice-wrapper { background-color: var(--white); border-bottom: 1px solid #ddd; padding-bottom: 0; }
-        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-radius: 4px; margin-top: 10px; margin-bottom: 10px; }
+        /* Updated: Seamless integration */
+        .notice-wrapper { background-color: var(--secondary-color); padding: 0; border: none; }
+        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; margin: 0; border-radius: 0; }
         .notice-label { background: #8a0000; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
         .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 130px; right: 0; top: 0; bottom: 0; }
         .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 35s linear infinite; }
