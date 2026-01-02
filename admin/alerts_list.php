@@ -1,13 +1,16 @@
 <?php
-$page_title = "Manage Urgent Alerts";
-require_once 'includes/header.php';
+require_once '../config.php';
+require_once 'auth_check.php';
 
+// Check permissions
 if (!has_permission('urgent_alerts')) {
+    require_once 'includes/header.php';
     echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
     require_once 'includes/footer.php';
     exit;
 }
 
+// Handle Delete
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $conn->query("DELETE FROM urgent_alerts WHERE id = $id");
@@ -15,6 +18,7 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+// Handle POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $conn->real_escape_string($_POST['title']);
     $message = $conn->real_escape_string($_POST['message']);
@@ -36,6 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: alerts_list.php");
     exit;
 }
+
+$page_title = "Manage Urgent Alerts";
+require_once 'includes/header.php';
 
 $edit_item = null;
 if (isset($_GET['edit'])) {
