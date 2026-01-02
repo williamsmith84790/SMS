@@ -1,72 +1,46 @@
-# Education Portal Setup Guide for XAMPP
+# EduPortal (PHP Version)
 
-This project is configured to work with the MySQL database provided by XAMPP.
+This is a complete rebuild of the EduPortal project using **PHP** and **MySQL**, designed to run on **XAMPP**.
 
 ## Prerequisites
 
-1.  **Python 3.10+**: Ensure Python is installed on your system.
-2.  **XAMPP**: Ensure XAMPP is installed and running (specifically the MySQL/MariaDB service).
-3.  **Git**: To clone the repository (if you haven't already).
+1.  **XAMPP**: Ensure you have XAMPP installed (includes Apache, PHP, and MySQL).
+2.  **Web Browser**: To view the site.
 
-## Database Setup
+## Installation
 
-1.  Open **phpMyAdmin** (usually at `http://localhost/phpmyadmin`).
-2.  Create a new database named `edu_portal`.
-    - Collation: `utf8mb4_general_ci` (recommended).
+1.  **Project Location**:
+    - Copy the entire project folder to your XAMPP `htdocs` directory (e.g., `C:\xampp\htdocs\edu_portal`).
 
-## Project Setup
+2.  **Database Setup**:
+    - Open **phpMyAdmin** (`http://localhost/phpmyadmin`).
+    - Create a new database named `edu_portal`.
+    - Click on the database name, then go to the **Import** tab.
+    - Choose the `database.sql` file provided in this project and click **Go**.
+    - This will create all the necessary tables (slider_images, notices, students_results, etc.).
 
-1.  **Install Dependencies:**
-    Open a terminal/command prompt in the project root directory and run:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *Note: Installing `mysqlclient` on Windows might require Visual C++ Build Tools or using a pre-compiled wheel. If you encounter issues, look for `mysqlclient` installation guides for your OS.*
+3.  **Configuration**:
+    - The project is configured to work with default XAMPP settings (User: `root`, Password: empty, Host: `localhost`).
+    - If your MySQL configuration is different, edit `config.php` to match your credentials.
 
-2.  **Database Configuration:**
-    The project uses the following default settings for MySQL (typical for XAMPP):
-    - **Host**: `localhost`
-    - **Port**: `3306`
-    - **User**: `root`
-    - **Password**: (empty)
-    - **Database Name**: `edu_portal`
+## Usage
 
-    If your XAMPP configuration is different (e.g., you have a password for root), you can override these using environment variables:
-    - `DB_NAME`
-    - `DB_USER`
-    - `DB_PASSWORD`
-    - `DB_HOST`
-    - `DB_PORT`
+1.  Start **Apache** and **MySQL** in the XAMPP Control Panel.
+2.  Open your browser and navigate to:
+    `http://localhost/edu_portal/index.php`
 
-    Example (PowerShell):
-    ```powershell
-    $env:DB_PASSWORD="yourpassword"
-    python manage.py runserver
-    ```
+## Features
 
-    Example (Bash/Git Bash):
-    ```bash
-    export DB_PASSWORD="yourpassword"
-    python manage.py runserver
-    ```
+- **Home**: Dynamic slider, ticker news, and pinned notices.
+- **Faculty**: List of faculty members with photos and bios.
+- **Gallery**: Photo albums and video gallery.
+- **Alumni**: Distinguished alumni records.
+- **Downloads**: Categorized document downloads.
+- **Results**: Student result search by Roll Number and Session.
+- **Dynamic Pages**: About us, History, etc. (managed via database slugs).
 
-3.  **Run Migrations:**
-    Create the database tables by running:
-    ```bash
-    python manage.py migrate
-    ```
+## Admin / Data Entry
 
-4.  **Create Superuser (Admin):**
-    ```bash
-    python manage.py createsuperuser
-    ```
+To add content (Faculty, Notices, Results, etc.), you will need to insert data into the MySQL database tables using phpMyAdmin or a separate admin tool.
 
-5.  **Run the Server:**
-    ```bash
-    python manage.py runserver
-    ```
-    Access the site at `http://127.0.0.1:8000`.
-
-## Notes on PHP
-
-While you are running XAMPP which includes PHP 8, this project is built with **Python/Django**. You do not need PHP to run this application, but you are using the MySQL server provided by your XAMPP installation.
+*Note: The previous Django Admin panel is not available in this PHP version. Database management is handled directly via SQL/phpMyAdmin.*
