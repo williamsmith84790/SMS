@@ -11,9 +11,9 @@ $notices_sql = "SELECT * FROM notices ORDER BY is_pinned DESC, date_posted DESC 
 $notices_result = $conn->query($notices_sql);
 ?>
 
-<div class="row">
-    <!-- Slider Section -->
-    <div class="col-md-8 mb-4">
+<!-- Slider Section (Full Width) -->
+<div class="row mb-5">
+    <div class="col-12">
         <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php
@@ -34,7 +34,7 @@ $notices_result = $conn->query($notices_sql);
                     }
                 } else {
                     // Default slide if no images
-                    echo '<div class="carousel-item active"><img src="https://via.placeholder.com/800x500?text=Welcome+to+EduPortal" class="d-block w-100 slider-img" alt="Welcome"></div>';
+                    echo '<div class="carousel-item active"><img src="https://via.placeholder.com/1200x500?text=Welcome+to+EduPortal" class="d-block w-100 slider-img" alt="Welcome"></div>';
                 }
                 ?>
             </div>
@@ -48,9 +48,11 @@ $notices_result = $conn->query($notices_sql);
             </button>
         </div>
     </div>
+</div>
 
-    <!-- Notices Sidebar -->
-    <div class="col-md-4">
+<!-- Notices Sidebar (Right Side Below Slider) -->
+<div class="row mb-4">
+    <div class="col-md-4 ms-auto">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Notice Board</h5>

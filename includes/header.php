@@ -253,26 +253,6 @@ function render_menu_item($item, $level = 0) {
     </div>
 </div>
 
-<!-- Notice Bar (Ticker) - Moved inside container and below top bar for cleaner look, or just restricted width -->
-<div class="notice-wrapper">
-    <div class="container">
-        <div class="notice-bar">
-            <div class="notice-label">NEWS UPDATES</div>
-            <div class="marquee-container">
-                <div class="marquee-content">
-                    <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
-                        <?php while($item = $ticker_result->fetch_assoc()): ?>
-                            <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Main Navigation -->
 <nav class="navbar navbar-expand-lg navbar-main sticky-top">
   <div class="container">
@@ -303,5 +283,25 @@ function render_menu_item($item, $level = 0) {
     </div>
   </div>
 </nav>
+
+<!-- Notice Bar (Ticker) - Moved below navbar -->
+<div class="notice-wrapper">
+    <div class="container">
+        <div class="notice-bar">
+            <div class="notice-label">NEWS UPDATES</div>
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
+                        <?php while($item = $ticker_result->fetch_assoc()): ?>
+                            <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <main class="container">
