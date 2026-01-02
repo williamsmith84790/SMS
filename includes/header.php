@@ -285,9 +285,9 @@ function render_menu_item($item, $level = 0) {
                   <i class="fas fa-circle fa-stack-2x" style="color: #e0e0e0;"></i>
                   <i class="fas fa-graduation-cap fa-stack-1x"></i>
                 </span>
+                <span><?php echo htmlspecialchars($site_name); ?></span>
             </div>
         <?php endif; ?>
-        <span><?php echo htmlspecialchars($site_name); ?></span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
