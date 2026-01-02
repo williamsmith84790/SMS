@@ -1,0 +1,127 @@
+<?php
+require_once '../config.php';
+require_once 'auth_check.php';
+
+if (!has_permission('news_ticker')) {
+    require_once 'includes/header.php';
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
+// Handle Delete (moved before header output)
+if (isset($_GET['delete'])) {
+    $id = (int)$_GET['delete'];
+    $conn->query("DELETE FROM ticker_items WHERE id = $id");
+    header("Location: ticker_list.php");
+    exit;
+}
+
+// Handle POST (moved before header output)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $content = $conn->real_escape_string($_POST['content']);
+    $link = $conn->real_escape_string($_POST['link']);
+    $is_active = isset($_POST['is_active']) ? 1 : 0;
+    
+    if (isset($_POST['id']) && !empty($_POST['id'])) {
+        $id = (int)$_POST['id'];
+        $sql = "UPDATE ticker_items SET content='$content', link='$link', is_active=$is_active WHERE id=$id";
+    } else {
+        $sql = "INSERT INTO ticker_items (content, link, is_active) VALUES ('$content', '$link', $is_active)";
+    }
+    
+    $conn->query($sql);
+    header("Location: ticker_list.php");
+    exit;
+}
+
+$page_title = "Manage News Ticker";
+require_once 'includes/header.php';
+
+$edit_item = null;
+if (isset($_GET['edit'])) {
+    $id = (int)$_GET['edit'];
+    $result = $conn->query("SELECT * FROM ticker_items WHERE id = $id");
+    $edit_item = $result->fetch_assoc();
+}
+
+$result = $conn->query("SELECT * FROM ticker_items ORDER BY created_at DESC");
+?>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><?php echo $edit_item ? 'Edit' : 'Add'; ?> Ticker Item</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <?php if($edit_item): ?>
+                        <input type="hidden" name="id" value="<?php echo $edit_item['id']; ?>">
+                    <?php endif; ?>
+                    <div class="mb-3">
+                        <label class="form-label">Content</label>
+                        <textarea name="content" class="form-control" rows="3" required><?php echo $edit_item ? htmlspecialchars($edit_item['content']) : ''; ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Link (Optional)</label>
+                        <input type="text" name="link" class="form-control" placeholder="e.g., http://google.com" value="<?php echo $edit_item && isset($edit_item['link']) ? htmlspecialchars($edit_item['link']) : ''; ?>">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" name="is_active" id="is_active" <?php echo ($edit_item && $edit_item['is_active']) ? 'checked' : 'checked'; ?>>
+                        <label class="form-check-label" for="is_active">Active?</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><?php echo $edit_item ? 'Update' : 'Add'; ?></button>
+                    <?php if($edit_item): ?>
+                        <a href="ticker_list.php" class="btn btn-secondary w-100 mt-2">Cancel</a>
+                    <?php endif; ?>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Ticker Items</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Content</th>
+                            <th>Link</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['content']); ?></td>
+                            <td>
+                                <?php if(!empty($row['link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($row['link']); ?>" target="_blank"><i class="fas fa-external-link-alt"></i> Link</a>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <span class="badge <?php echo $row['is_active'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                    <?php echo $row['is_active'] ? 'Active' : 'Inactive'; ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-info text-white"><i class="fas fa-edit"></i></a>
+                                <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require_once 'includes/footer.php'; ?>
