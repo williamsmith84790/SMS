@@ -11,7 +11,7 @@ $active_alert = ($alert_result && $alert_result->num_rows > 0) ? $alert_result->
 $ticker_sql = "SELECT * FROM ticker_items WHERE is_active = 1 ORDER BY created_at DESC LIMIT 10";
 $ticker_result = $conn->query($ticker_sql);
 
-// Fetch Site Settings (Logo, etc)
+// Fetch Site Settings
 $settings = [];
 $settings_result = $conn->query("SELECT * FROM site_settings");
 if ($settings_result) {
@@ -21,6 +21,8 @@ if ($settings_result) {
 }
 $site_logo = isset($settings['site_logo']) && !empty($settings['site_logo']) ? $settings['site_logo'] : null;
 $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
+$contact_phone = isset($settings['contact_phone']) ? $settings['contact_phone'] : '1800 000 0000';
+$contact_email = isset($settings['contact_email']) ? $settings['contact_email'] : 'info@eduportal.org';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,55 +33,77 @@ $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { font-family: 'Open Sans', sans-serif; background-color: #f9f9f9; }
 
-        /* Ticker Styles (Right to Left) */
-        .ticker-container { background: #002147; color: white; overflow: hidden; height: 40px; display: flex; align-items: center; }
-        .ticker-title { background: #cf142b; color: white; padding: 0 20px; height: 100%; display: flex; align-items: center; font-weight: bold; z-index: 10; }
-        .ticker-wrap { width: 100%; overflow: hidden; white-space: nowrap; }
-        .ticker-move { display: inline-block; animation: ticker-h 30s linear infinite; padding-left: 100%; }
-        .ticker-item { display: inline-block; padding: 0 2rem; color: #fff; }
-        @keyframes ticker-h {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
+        /* Typography override for a more academic look */
+        h1, h2, h3, h4, h5, h6 { font-family: 'Roboto', sans-serif; font-weight: 700; color: #333; }
+
+        /* --- Ticker (Notice Bar) --- */
+        .notice-bar { background-color: #cf142b; color: white; font-size: 0.9rem; height: 35px; line-height: 35px; overflow: hidden; position: relative; }
+        .notice-label { background: #a30e1f; padding: 0 15px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; }
+        .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 100px; right: 0; top: 0; bottom: 0; }
+        .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 30s linear infinite; }
+        .marquee-content span { display: inline-block; margin-right: 40px; }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
         }
 
-        .navbar-brand img { height: 60px; width: auto; max-width: 200px; object-fit: contain; }
-        .footer { background: #333; color: white; padding: 20px 0; }
-        .alert-modal { display: block; background: rgba(0,0,0,0.5); }
+        /* --- Top Bar --- */
+        .top-bar { background-color: #002147; color: #ccc; font-size: 0.85rem; padding: 8px 0; }
+        .top-bar a { color: #ccc; text-decoration: none; transition: color 0.3s; }
+        .top-bar a:hover { color: #fff; }
+        .top-bar i { color: #fdbb00; margin-right: 5px; }
+        .top-bar .social-icons a { margin-left: 10px; }
+        .top-bar .divider { margin: 0 10px; color: #444; }
 
-        /* Dropdown Hover */
-        @media all and (min-width: 992px) {
-            .navbar .nav-item .dropdown-menu{ display: none; }
-            .navbar .nav-item:hover .dropdown-menu{ display: block; margin-top: 0; }
-            .navbar .nav-item .dropdown-menu{ margin-top:0; }
+        /* --- Main Navbar --- */
+        .navbar-main { background-color: #fff; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .navbar-brand img { height: 50px; width: auto; }
+        .navbar-brand span { color: #002147; font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-left: 10px; vertical-align: middle; }
+
+        .nav-link { color: #333 !important; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; padding: 10px 15px !important; transition: all 0.3s; }
+        .nav-link:hover, .nav-item.show .nav-link { color: #002147 !important; }
+        .nav-item.active .nav-link { color: #002147 !important; }
+
+        /* Dropdown Styling */
+        .dropdown-menu { border: none; border-top: 3px solid #fdbb00; border-radius: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding: 0; margin-top: 0; }
+        .dropdown-item { padding: 10px 20px; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee; transition: all 0.2s; }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background-color: #f8f9fa; color: #002147; padding-left: 25px; }
+
+        /* Multilevel Dropdown */
+        @media (min-width: 992px) {
+            .navbar-expand-lg .navbar-nav .dropdown-menu { min-width: 220px; }
+            .dropdown-submenu { position: relative; }
+            .dropdown-submenu > .dropdown-menu { top: 0; left: 100%; margin-top: -3px; display: none; }
+            .dropdown-submenu:hover > .dropdown-menu { display: block; }
+            .dropdown-submenu > a::after { content: "\f0da"; font-family: "Font Awesome 5 Free"; font-weight: 900; float: right; margin-top: 4px; }
         }
 
-        /* Submenu styles */
-        .dropdown-submenu { position: relative; }
-        .dropdown-submenu>.dropdown-menu { top: 0; left: 100%; margin-top: -6px; margin-left: -1px; -webkit-border-radius: 0 6px 6px 6px; -moz-border-radius: 0 6px 6px 6px; border-radius: 0 6px 6px 6px; }
-        .dropdown-submenu:hover>.dropdown-menu { display: block; }
-        .dropdown-submenu>a:after { display: block; content: " "; float: right; width: 0; height: 0; border-color: transparent; border-style: solid; border-width: 5px 0 5px 5px; border-left-color: #ccc; margin-top: 5px; margin-right: -10px; }
-        .dropdown-submenu:hover>a:after { border-left-color: #fff; }
-        .dropdown-submenu.pull-left { float: none; }
-        .dropdown-submenu.pull-left>.dropdown-menu { left: -100%; margin-left: 10px; -webkit-border-radius: 6px 0 6px 6px; -moz-border-radius: 6px 0 6px 6px; border-radius: 6px 0 6px 6px; }
+        /* --- Global Styles --- */
+        main { min-height: 60vh; padding: 40px 0; }
+        .section-title { position: relative; margin-bottom: 30px; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background: #fdbb00; margin-top: 10px; }
 
-        /* Custom Styles */
-        .slider-img { height: 500px; object-fit: cover; }
-        .card-img-top-faculty { height: 300px; object-fit: cover; }
-        .gallery-cover { height: 250px; object-fit: cover; }
+        /* Mobile Adjustments */
+        @media (max-width: 991px) {
+            .top-bar { text-align: center; }
+            .top-bar .d-flex { justify-content: center !important; flex-wrap: wrap; }
+            .top-bar .contact-info, .top-bar .social-icons { margin-bottom: 5px; width: 100%; }
+        }
     </style>
 </head>
 <body>
 
 <!-- Urgent Alert Modal -->
 <?php if ($active_alert): ?>
-<div class="modal fade show" id="urgentAlertModal" tabindex="-1" aria-labelledby="urgentAlertLabel" aria-hidden="true" style="display: block; background: rgba(0,0,0,0.5);">
+<div class="modal fade show" id="urgentAlertModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="urgentAlertLabel"><i class="fas fa-exclamation-triangle"></i> <?php echo htmlspecialchars($active_alert['title']); ?></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
+        <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> <?php echo htmlspecialchars($active_alert['title']); ?></h5>
+        <button type="button" class="btn-close" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
       </div>
       <div class="modal-body">
         <?php echo nl2br(htmlspecialchars($active_alert['message'])); ?>
@@ -89,42 +113,64 @@ $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
 </div>
 <?php endif; ?>
 
-<!-- Top Bar / Ticker -->
-<div class="ticker-container">
-    <div class="ticker-title">LATEST NEWS</div>
-    <div class="ticker-wrap">
-        <div class="ticker-move">
+<!-- Notice Bar (Ticker) -->
+<div class="notice-bar">
+    <div class="notice-label">NEWS UPDATES</div>
+    <div class="marquee-container">
+        <div class="marquee-content">
             <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
                 <?php while($item = $ticker_result->fetch_assoc()): ?>
-                <div class="ticker-item"><i class="fas fa-star text-warning small"></i> <?php echo htmlspecialchars($item['content']); ?></div>
+                    <span><i class="fas fa-dot-circle small"></i> <?php echo htmlspecialchars($item['content']); ?></span>
                 <?php endwhile; ?>
             <?php else: ?>
-                <div class="ticker-item">Welcome to <?php echo htmlspecialchars($site_name); ?></div>
+                <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
             <?php endif; ?>
         </div>
     </div>
 </div>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top py-3">
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="contact-info">
+                <a href="mailto:<?php echo htmlspecialchars($contact_email); ?>"><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($contact_email); ?></a>
+                <span class="divider">|</span>
+                <a href="tel:<?php echo htmlspecialchars($contact_phone); ?>"><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($contact_phone); ?></a>
+            </div>
+            <div class="social-icons">
+                <a href="admin/login.php"><i class="fas fa-user-lock"></i> Staff Login</a>
+                <span class="divider">|</span>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="downloads.php" class="btn btn-warning btn-sm text-dark ms-2 fw-bold" style="padding: 2px 10px; font-size: 0.75rem;">Apply Online</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Navigation -->
+<nav class="navbar navbar-expand-lg navbar-main sticky-top">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="index.php">
+    <a class="navbar-brand" href="index.php">
         <?php if($site_logo): ?>
-            <img src="<?php echo htmlspecialchars($site_logo); ?>" alt="Logo" class="me-2">
+            <img src="<?php echo htmlspecialchars($site_logo); ?>" alt="Logo">
+        <?php else: ?>
+            <i class="fas fa-graduation-cap fa-2x text-warning"></i>
         <?php endif; ?>
-        <span class="d-none d-md-block fw-bold text-primary fs-4"><?php echo htmlspecialchars($site_name); ?></span>
+        <span><?php echo htmlspecialchars($site_name); ?></span>
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto fw-semibold">
-        <!-- Home -->
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
 
-        <!-- About us -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">About us</a>
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">About us</a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="page.php?slug=vision-mission">Vision & Mission</a></li>
                 <li><a class="dropdown-item" href="page.php?slug=history">History</a></li>
@@ -133,23 +179,21 @@ $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
             </ul>
         </li>
 
-        <!-- Administration -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Administration</a>
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Administration</a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="page.php?slug=principal-office">Principal Office</a></li>
                 <li><a class="dropdown-item" href="page.php?slug=vice-principal-office">Vice Principal Office</a></li>
                 <li><a class="dropdown-item" href="page.php?slug=controller-office">Controller Office</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=student-affairs">Student Affairs Office</a></li>
+                <li><a class="dropdown-item" href="page.php?slug=student-affairs">Student Affairs</a></li>
             </ul>
         </li>
 
-        <!-- Academics -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Academics</a>
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Academics</a>
             <ul class="dropdown-menu">
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" href="#">Programs</a>
+                    <a class="dropdown-item" href="#">Programs</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="page.php?slug=program-intermediate">Intermediate</a></li>
                         <li><a class="dropdown-item" href="page.php?slug=program-bs-4ydp">BS-4YDP</a></li>
@@ -159,22 +203,20 @@ $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
             </ul>
         </li>
 
-        <!-- Admissions -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Admissions</a>
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Admissions</a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="downloads.php">Intermediate (Prospectus)</a></li>
                 <li><a class="dropdown-item" href="downloads.php">BS-4YDP (Prospectus)</a></li>
             </ul>
         </li>
 
-        <!-- Life at Campus -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Life at Campus</a>
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Life at Campus</a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="page.php?slug=facilities">Facilities</a></li>
                 <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" href="#">Societies</a>
+                    <a class="dropdown-item" href="#">Societies</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="page.php?slug=college-societies">College Societies</a></li>
                         <li><a class="dropdown-item" href="page.php?slug=girls-guide">Girls Guide Association</a></li>
@@ -187,9 +229,8 @@ $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
             </ul>
         </li>
 
-        <!-- Alumni -->
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Alumni</a>
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Alumni</a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="alumni.php">Our Best Graduates</a></li>
                 <li><a class="dropdown-item" href="page.php?slug=success-stories">Success Stories</a></li>
@@ -197,12 +238,12 @@ $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
             </ul>
         </li>
 
-        <!-- Contact & Events -->
-        <li class="nav-item"><a class="nav-link" href="contact.php">Contact us</a></li>
         <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="results.php"><i class="fas fa-search"></i> Results</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<main class="container my-4" style="min-height: 60vh;">
+<main class="container">

@@ -1,12 +1,144 @@
 </main>
 
-<footer class="footer mt-auto py-3">
-  <div class="container text-center">
-    <span class="text-muted">© <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>. All rights reserved.</span>
-  </div>
+<style>
+    /* Footer Styles */
+    .footer-area { background-color: #111; color: #aaa; padding: 60px 0 20px; font-size: 0.9rem; }
+    .footer-area h3 { color: #fff; font-size: 1.2rem; margin-bottom: 25px; position: relative; padding-bottom: 10px; }
+    .footer-area h3::after { content: ''; position: absolute; left: 0; bottom: 0; width: 30px; height: 2px; background: #fdbb00; }
+    .footer-area p { line-height: 1.6; }
+    .footer-area a { color: #aaa; text-decoration: none; transition: 0.3s; }
+    .footer-area a:hover { color: #fdbb00; padding-left: 5px; }
+    .footer-links ul { padding: 0; list-style: none; }
+    .footer-links li { margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+    .footer-links li:last-child { border-bottom: none; }
+    .footer-contact li { display: flex; margin-bottom: 15px; }
+    .footer-contact i { color: #fdbb00; margin-right: 15px; font-size: 1.1rem; margin-top: 3px; }
+
+    .footer-bottom { background-color: #000; padding: 20px 0; margin-top: 40px; border-top: 1px solid #222; }
+    .copyright-text { margin: 0; font-size: 0.85rem; }
+    .footer-social a { color: #fff; margin-left: 15px; font-size: 1rem; transition: 0.3s; }
+    .footer-social a:hover { color: #fdbb00; }
+
+    /* Newsletter Form */
+    .newsletter-form .form-control { background: #222; border: none; border-radius: 0; color: #fff; padding: 10px; }
+    .newsletter-form .btn { border-radius: 0; background: #fdbb00; color: #000; font-weight: bold; }
+    .newsletter-form .btn:hover { background: #e0b000; }
+</style>
+
+<footer class="footer-area">
+    <div class="container">
+        <div class="row">
+            <!-- Col 1: About -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h3>About Us</h3>
+                <p>We are dedicated to providing quality education and fostering an environment of academic excellence and personal growth for all our students.</p>
+                <?php if(isset($site_logo) && $site_logo): ?>
+                    <img src="<?php echo htmlspecialchars($site_logo); ?>" alt="Logo" style="max-height: 50px; opacity: 0.8; margin-top: 10px;">
+                <?php endif; ?>
+            </div>
+
+            <!-- Col 2: Useful Links -->
+            <div class="col-lg-3 col-md-6 mb-4 footer-links">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="page.php?slug=vision-mission">Vision & Mission</a></li>
+                    <li><a href="faculty.php">Our Faculty</a></li>
+                    <li><a href="downloads.php">Downloads</a></li>
+                    <li><a href="results.php">Check Results</a></li>
+                    <li><a href="contact.php">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4 footer-contact">
+                <h3>Contact Us</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><?php echo nl2br(htmlspecialchars($settings['contact_address'] ?? '123 Education Street, Knowledge City')); ?></span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        <span><?php echo htmlspecialchars($settings['contact_phone'] ?? '(123) 456-7890'); ?></span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span><?php echo htmlspecialchars($settings['contact_email'] ?? 'info@eduportal.com'); ?></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Newsletter -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter to get the latest updates and news.</p>
+                <form class="newsletter-form mt-3" action="#" method="POST">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Your Email">
+                        <button class="btn" type="submit">GO</button>
+                    </div>
+                </form>
+                <div class="mt-4">
+                    <h3>Follow Us</h3>
+                    <div class="footer-social" style="margin-left: -15px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="copyright-text">
+                        &copy; <?php echo date('Y'); ?> <strong><?php echo htmlspecialchars($settings['site_name'] ?? 'EduPortal'); ?></strong>. All Rights Reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-links d-inline-block">
+                        <ul class="d-flex list-unstyled mb-0" style="font-size: 0.8rem;">
+                            <li style="border:none; margin:0 10px;"><a href="#">Privacy Policy</a></li>
+                            <li style="border:none; margin:0 10px;"><a href="#">Terms of Use</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Enable nested dropdowns
+    document.addEventListener("DOMContentLoaded", function(){
+        // make it as accordion for smaller screens
+        if (window.innerWidth < 992) {
+            document.querySelectorAll('.dropdown-menu a').forEach(function(element){
+                element.addEventListener('click', function (e) {
+                    let nextEl = this.nextElementSibling;
+                    if(nextEl && nextEl.classList.contains('dropdown-menu')) {
+                        // prevent opening link if link needs to open dropdown
+                        e.preventDefault();
+                        if(nextEl.style.display == 'block'){
+                            nextEl.style.display = 'none';
+                        } else {
+                            nextEl.style.display = 'block';
+                        }
+                    }
+                });
+            })
+        }
+    });
+</script>
 </body>
 </html>
-<?php $conn->close(); ?>
+<?php if(isset($conn)) $conn->close(); ?>
