@@ -102,7 +102,8 @@ function render_menu_item($item, $level = 0) {
     <style>
         :root {
             --primary-color: #002147; /* Deep Royal Blue */
-            --secondary-color: #FDBB00; /* Academic Gold */
+            --secondary-color: #b30000; /* Crimson Red (Professional accent) */
+            --accent-light: #e6e6e6; /* Silver/Light Grey */
             --text-color: #333333;
             --bg-light: #f4f6f9;
             --white: #ffffff;
@@ -125,8 +126,10 @@ function render_menu_item($item, $level = 0) {
         a:hover { color: var(--secondary-color); }
 
         /* --- Ticker (Notice Bar) --- */
-        .notice-bar { background-color: var(--secondary-color); color: var(--primary-color); font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .notice-label { background: #e0a800; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
+        /* Updated: Not full width, contained */
+        .notice-wrapper { background-color: var(--white); border-bottom: 1px solid #ddd; }
+        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-radius: 4px; margin-top: 10px; }
+        .notice-label { background: #8a0000; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
         .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 130px; right: 0; top: 0; bottom: 0; }
         .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 35s linear infinite; }
         .marquee-content span { display: inline-block; margin-right: 50px; font-weight: 600; }
@@ -136,10 +139,10 @@ function render_menu_item($item, $level = 0) {
         }
 
         /* --- Top Bar --- */
-        .top-bar { background-color: var(--primary-color); color: #fff; font-size: 0.85rem; padding: 10px 0; border-bottom: 3px solid rgba(255,255,255,0.1); }
+        .top-bar { background-color: var(--primary-color); color: #fff; font-size: 0.85rem; padding: 10px 0; border-bottom: 3px solid var(--secondary-color); }
         .top-bar a { color: #e0e0e0; font-weight: 500; }
-        .top-bar a:hover { color: var(--secondary-color); }
-        .top-bar i { color: var(--secondary-color); margin-right: 6px; }
+        .top-bar a:hover { color: #fff; text-decoration: underline; }
+        .top-bar i { color: #ccc; margin-right: 6px; }
         .top-bar .social-icons a { margin-left: 15px; }
         .top-bar .divider { margin: 0 12px; color: rgba(255,255,255,0.3); }
 
@@ -161,7 +164,7 @@ function render_menu_item($item, $level = 0) {
         .navbar-nav .nav-link:hover, .navbar-nav .nav-item.show .nav-link {
             color: var(--secondary-color) !important;
             border-bottom: 3px solid var(--secondary-color);
-            background-color: rgba(253, 187, 0, 0.05);
+            background-color: rgba(0, 0, 0, 0.02);
         }
         .navbar-nav .nav-item.active .nav-link {
             color: var(--secondary-color) !important;
@@ -172,7 +175,7 @@ function render_menu_item($item, $level = 0) {
         .dropdown-menu { border-top: 3px solid var(--secondary-color); border-radius: 0 0 5px 5px; padding: 0; margin-top: 0; background: var(--white); }
         .dropdown-item { padding: 12px 20px; font-size: 0.9rem; color: #555; border-bottom: 1px solid #f0f0f0; transition: all 0.2s; font-family: 'Open Sans', sans-serif; font-weight: 600; }
         .dropdown-item:last-child { border-bottom: none; }
-        .dropdown-item:hover { background-color: #f8f9fa; color: var(--primary-color); padding-left: 25px; border-left: 3px solid var(--secondary-color); }
+        .dropdown-item:hover { background-color: #f8f9fa; color: var(--secondary-color); padding-left: 25px; border-left: 3px solid var(--secondary-color); }
 
         /* Multilevel Dropdown */
         @media (min-width: 992px) {
@@ -181,15 +184,15 @@ function render_menu_item($item, $level = 0) {
             .dropdown-submenu > .dropdown-menu { top: 0; left: 100%; margin-top: -3px; display: none; }
             .dropdown-submenu:hover > .dropdown-menu { display: block; }
             .dropdown-submenu > a::after { content: "\f0da"; font-family: "Font Awesome 5 Free"; font-weight: 900; float: right; margin-top: 4px; color: #ccc; }
-            .dropdown-submenu:hover > a::after { color: var(--primary-color); }
+            .dropdown-submenu:hover > a::after { color: var(--secondary-color); }
         }
 
         /* --- Common UI Components --- */
         .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); padding: 10px 25px; border-radius: 4px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
         .btn-primary:hover { background-color: #00152e; border-color: #00152e; }
 
-        .btn-warning { background-color: var(--secondary-color); border-color: var(--secondary-color); color: var(--primary-color); font-weight: 700; }
-        .btn-warning:hover { background-color: #e0a800; border-color: #e0a800; color: var(--primary-color); }
+        .btn-warning { background-color: var(--secondary-color); border-color: var(--secondary-color); color: white; font-weight: 700; }
+        .btn-warning:hover { background-color: #8a0000; border-color: #8a0000; color: white; }
 
         .card { border: none; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; background: var(--white); }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -228,22 +231,6 @@ function render_menu_item($item, $level = 0) {
 </div>
 <?php endif; ?>
 
-<!-- Notice Bar (Ticker) -->
-<div class="notice-bar">
-    <div class="notice-label">NEWS UPDATES</div>
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
-                <?php while($item = $ticker_result->fetch_assoc()): ?>
-                    <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
-
 <!-- Top Bar -->
 <div class="top-bar">
     <div class="container">
@@ -266,6 +253,26 @@ function render_menu_item($item, $level = 0) {
     </div>
 </div>
 
+<!-- Notice Bar (Ticker) - Moved inside container and below top bar for cleaner look, or just restricted width -->
+<div class="notice-wrapper">
+    <div class="container">
+        <div class="notice-bar">
+            <div class="notice-label">NEWS UPDATES</div>
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
+                        <?php while($item = $ticker_result->fetch_assoc()): ?>
+                            <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Main Navigation -->
 <nav class="navbar navbar-expand-lg navbar-main sticky-top">
   <div class="container">
@@ -275,8 +282,8 @@ function render_menu_item($item, $level = 0) {
         <?php else: ?>
             <div class="d-flex align-items-center">
                 <span class="fa-stack fa-lg" style="font-size: 1.2rem; color: var(--primary-color);">
-                  <i class="fas fa-circle fa-stack-2x text-warning"></i>
-                  <i class="fas fa-graduation-cap fa-stack-1x fa-inverse"></i>
+                  <i class="fas fa-circle fa-stack-2x" style="color: #e0e0e0;"></i>
+                  <i class="fas fa-graduation-cap fa-stack-1x"></i>
                 </span>
             </div>
         <?php endif; ?>

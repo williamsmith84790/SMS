@@ -17,14 +17,14 @@ require_once 'auth_check.php';
     <style>
         :root {
             --primary-color: #002147;
-            --secondary-color: #FDBB00;
+            --secondary-color: #b30000;
         }
         body { font-family: 'Open Sans', sans-serif; background-color: #f4f6f9; }
 
         .sidebar { min-height: 100vh; background: var(--primary-color); color: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
         .sidebar .brand { font-family: 'Merriweather', serif; font-size: 1.2rem; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: block; color: #fff; text-decoration: none; }
         .sidebar a.nav-link { color: rgba(255,255,255,.8); text-decoration: none; padding: 12px 20px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; font-size: 0.9rem; }
-        .sidebar a.nav-link:hover, .sidebar a.nav-link.active { background: rgba(255,255,255,0.1); color: var(--secondary-color); border-left: 4px solid var(--secondary-color); padding-left: 16px; }
+        .sidebar a.nav-link:hover, .sidebar a.nav-link.active { background: rgba(255,255,255,0.1); color: #fff; border-left: 4px solid var(--secondary-color); padding-left: 16px; }
         .sidebar i { width: 25px; text-align: center; margin-right: 10px; opacity: 0.8; }
 
         .content { padding: 30px; }
@@ -44,7 +44,7 @@ require_once 'auth_check.php';
     <!-- Sidebar -->
     <div class="sidebar d-flex flex-column flex-shrink-0 text-white" style="width: 260px;">
         <a href="dashboard.php" class="brand">
-            <i class="fas fa-graduation-cap text-warning"></i> <?php echo SITE_NAME; ?> <small style="font-size: 0.7rem; display: block; opacity: 0.6; margin-top: 5px;">ADMIN PANEL</small>
+            <i class="fas fa-graduation-cap text-danger"></i> <?php echo SITE_NAME; ?> <small style="font-size: 0.7rem; display: block; opacity: 0.6; margin-top: 5px;">ADMIN PANEL</small>
         </a>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item"><a href="dashboard.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
