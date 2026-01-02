@@ -22,13 +22,12 @@ $events_result = $conn->query($events_sql);
 $f1_title = isset($settings['feature_1_title']) ? $settings['feature_1_title'] : 'Intermediate Program';
 $f1_text = isset($settings['feature_1_text']) ? $settings['feature_1_text'] : 'Comprehensive F.Sc, F.A, and I.Com programs designed to build a strong academic foundation.';
 $f1_link = isset($settings['feature_1_link']) ? $settings['feature_1_link'] : 'page.php?slug=program-intermediate';
-// Use placeholders if no image is set (in a real app, maybe uploadable too, but request said manageable, text settings cover most needs)
-$f1_img = "https://via.placeholder.com/600x400/002147/ffffff?text=" . urlencode($f1_title);
+$f1_img = isset($settings['feature_1_image']) && !empty($settings['feature_1_image']) ? $settings['feature_1_image'] : "https://via.placeholder.com/600x400/002147/ffffff?text=" . urlencode($f1_title);
 
 $f2_title = isset($settings['feature_2_title']) ? $settings['feature_2_title'] : 'BS-4YDP Program';
 $f2_text = isset($settings['feature_2_text']) ? $settings['feature_2_text'] : 'Four-year degree programs offering in-depth specialization and research opportunities.';
 $f2_link = isset($settings['feature_2_link']) ? $settings['feature_2_link'] : 'page.php?slug=program-bs-4ydp';
-$f2_img = "https://via.placeholder.com/600x400/b30000/ffffff?text=" . urlencode($f2_title);
+$f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_image']) ? $settings['feature_2_image'] : "https://via.placeholder.com/600x400/b30000/ffffff?text=" . urlencode($f2_title);
 ?>
 
 <style>
@@ -85,25 +84,6 @@ $f2_img = "https://via.placeholder.com/600x400/b30000/ffffff?text=" . urlencode(
         </div>
     </div>
 </div>
-
-<!-- Stats / Badges Section -->
-<?php if($stats_result && $stats_result->num_rows > 0): ?>
-<div class="row mb-5">
-    <div class="col-12">
-        <div class="row g-4 justify-content-center">
-            <?php while($stat = $stats_result->fetch_assoc()): ?>
-            <div class="col-md-2 col-sm-4 col-6">
-                <div class="stat-card">
-                    <i class="<?php echo htmlspecialchars($stat['icon']); ?>"></i>
-                    <span class="count"><?php echo htmlspecialchars($stat['number']); ?></span>
-                    <span class="label"><?php echo htmlspecialchars($stat['label']); ?></span>
-                </div>
-            </div>
-            <?php endwhile; ?>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
 
 <!-- Programs and Notices -->
 <div class="row mb-5">
@@ -233,5 +213,29 @@ $f2_img = "https://via.placeholder.com/600x400/b30000/ffffff?text=" . urlencode(
         </div>
     </div>
 </div>
+
+<!-- Stats / Badges Section (Bottom) -->
+<?php if($stats_result && $stats_result->num_rows > 0): ?>
+<div class="row mb-5 pt-4">
+    <div class="col-12">
+        <div class="row g-4 justify-content-center">
+            <?php
+            // Reset pointer if reused or fetch again. Since we used fetch_assoc loop above, the pointer is at end.
+            // But wait, we deleted the loop above. So pointer is at start. Correct.
+            // Check if stats_result is valid
+            if ($stats_result) $stats_result->data_seek(0);
+            while($stat = $stats_result->fetch_assoc()): ?>
+            <div class="col-md-2 col-sm-4 col-6">
+                <div class="stat-card">
+                    <i class="<?php echo htmlspecialchars($stat['icon']); ?>"></i>
+                    <span class="count"><?php echo htmlspecialchars($stat['number']); ?></span>
+                    <span class="label"><?php echo htmlspecialchars($stat['label']); ?></span>
+                </div>
+            </div>
+            <?php endwhile; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 <?php require_once 'includes/footer.php'; ?>

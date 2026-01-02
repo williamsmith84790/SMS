@@ -25,19 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'feature_2_title', 'feature_2_text', 'feature_2_link'
     ];
 
-    // Logo Upload logic
-    $logo_path = isset($settings['site_logo']) ? $settings['site_logo'] : '';
-    if (isset($_FILES['site_logo']) && $_FILES['site_logo']['error'] === 0) {
-        $target_dir = "../media/settings/";
-        if (!file_exists($target_dir)) { mkdir($target_dir, 0777, true); }
+    // File Upload Logic Helper
+    $target_dir = "../media/settings/";
+    if (!file_exists($target_dir)) { mkdir($target_dir, 0777, true); }
 
-        $filename = "logo_" . time() . "_" . basename($_FILES['site_logo']['name']);
-        $target_file = $target_dir . $filename;
-
-        if (move_uploaded_file($_FILES['site_logo']['tmp_name'], $target_file)) {
-            $logo_path = "media/settings/" . $filename;
+    function handle_upload($file_key, $existing_path, $prefix, $target_dir) {
+        if (isset($_FILES[$file_key]) && $_FILES[$file_key]['error'] === 0) {
+            $filename = $prefix . "_" . time() . "_" . basename($_FILES[$file_key]['name']);
+            $target_file = $target_dir . $filename;
+            if (move_uploaded_file($_FILES[$file_key]['tmp_name'], $target_file)) {
+                return "media/settings/" . $filename;
+            }
         }
+        return $existing_path;
     }
+
+    $logo_path = handle_upload('site_logo', isset($settings['site_logo']) ? $settings['site_logo'] : '', 'logo', $target_dir);
+    $f1_img_path = handle_upload('feature_1_image', isset($settings['feature_1_image']) ? $settings['feature_1_image'] : '', 'f1', $target_dir);
+    $f2_img_path = handle_upload('feature_2_image', isset($settings['feature_2_image']) ? $settings['feature_2_image'] : '', 'f2', $target_dir);
 
     // Process text fields
     foreach ($fields as $field) {
@@ -52,14 +57,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->query($sql);
     }
 
-    // Process Logo Update
-    $check_logo = $conn->query("SELECT id FROM site_settings WHERE setting_key = 'site_logo'");
-    if ($check_logo->num_rows > 0) {
-        $sql = "UPDATE site_settings SET setting_value = '$logo_path' WHERE setting_key = 'site_logo'";
-    } else {
-        $sql = "INSERT INTO site_settings (setting_key, setting_value) VALUES ('site_logo', '$logo_path')";
+    // Process File Updates
+    $file_updates = [
+        'site_logo' => $logo_path,
+        'feature_1_image' => $f1_img_path,
+        'feature_2_image' => $f2_img_path
+    ];
+
+    foreach ($file_updates as $key => $path) {
+        $check = $conn->query("SELECT id FROM site_settings WHERE setting_key = '$key'");
+        if ($check->num_rows > 0) {
+            $sql = "UPDATE site_settings SET setting_value = '$path' WHERE setting_key = '$key'";
+        } else {
+            $sql = "INSERT INTO site_settings (setting_key, setting_value) VALUES ('$key', '$path')";
+        }
+        $conn->query($sql);
     }
-    $conn->query($sql);
 
     $_SESSION['msg_success'] = "Settings updated successfully.";
     echo "<script>window.location.href='settings.php';</script>";
@@ -185,6 +198,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label class="form-label">Description</label>
                                 <textarea name="feature_1_text" class="form-control" rows="2"><?php echo isset($settings['feature_1_text']) ? htmlspecialchars($settings['feature_1_text']) : ''; ?></textarea>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Card Image</label>
+                                <?php if(isset($settings['feature_1_image']) && $settings['feature_1_image']): ?>
+                                    <div class="mb-2 p-2 bg-light border rounded">
+                                        <img src="../<?php echo $settings['feature_1_image']; ?>" height="60">
+                                    </div>
+                                <?php endif; ?>
+                                <input type="file" name="feature_1_image" class="form-control">
+                            </div>
 
                             <hr>
 
@@ -202,6 +224,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
                                 <textarea name="feature_2_text" class="form-control" rows="2"><?php echo isset($settings['feature_2_text']) ? htmlspecialchars($settings['feature_2_text']) : ''; ?></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Card Image</label>
+                                <?php if(isset($settings['feature_2_image']) && $settings['feature_2_image']): ?>
+                                    <div class="mb-2 p-2 bg-light border rounded">
+                                        <img src="../<?php echo $settings['feature_2_image']; ?>" height="60">
+                                    </div>
+                                <?php endif; ?>
+                                <input type="file" name="feature_2_image" class="form-control">
                             </div>
                         </div>
                     </div>
