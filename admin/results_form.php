@@ -111,7 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php if($student_result && $student_result['result_file']): ?>
                             <div class="mb-2"><a href="../<?php echo $student_result['result_file']; ?>" target="_blank">Current File</a></div>
                         <?php endif; ?>
-                        <input type="file" name="result_file" class="form-control">
+                        <input type="file" name="result_file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.csv">
+                        <small class="text-muted">Allowed types: PDF, DOC, CSV, Image</small>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                     <a href="results_list.php" class="btn btn-secondary">Cancel</a>
