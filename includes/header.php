@@ -297,7 +297,7 @@ function render_menu_item($item, $level = 0) {
 <div class="notice-wrapper">
     <div class="container">
         <div class="notice-bar">
-            <div class="notice-label">NEWS UPDATES</div>
+            <div class="notice-label">LATEST UPDATES</div>
             <div class="marquee-container">
                 <div class="marquee-content">
                     <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>

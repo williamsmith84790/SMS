@@ -50,10 +50,35 @@ $notices_result = $conn->query($notices_sql);
     </div>
 </div>
 
-<!-- Notices Sidebar (Right Side Below Slider) -->
+<!-- Programs and Notices -->
 <div class="row mb-4">
-    <div class="col-md-4 ms-auto">
-        <div class="card shadow-sm">
+    <div class="col-md-8">
+        <div class="row h-100">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="https://via.placeholder.com/600x400/002147/ffffff?text=Intermediate+Program" class="card-img-top" alt="Intermediate Program" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold" style="color: var(--primary-color);">Intermediate Program</h5>
+                        <p class="card-text small">Our Intermediate program offers Pre-Medical, Pre-Engineering, and ICS disciplines with state-of-the-art labs and experienced faculty.</p>
+                        <a href="page.php?slug=program-intermediate" class="btn btn-sm btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="https://via.placeholder.com/600x400/b30000/ffffff?text=BS+4YDP+Program" class="card-img-top" alt="BS-4YDP Program" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold" style="color: var(--primary-color);">BS-4YDP Program</h5>
+                        <p class="card-text small">Our 4-Year Degree Programs in CS, English, and Mathematics provide in-depth knowledge and research opportunities.</p>
+                        <a href="page.php?slug=program-bs-4ydp" class="btn btn-sm btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Notice Board</h5>
             </div>
