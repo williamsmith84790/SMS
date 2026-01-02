@@ -2,6 +2,12 @@
 $page_title = "Student Result";
 require_once 'includes/header.php';
 
+if (!has_permission('results')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $student_result = null;
 
@@ -97,15 +103,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Detailed Result (JSON or Text)</label>
-                        <textarea name="result_data" class="form-control" rows="4"><?php echo $student_result ? htmlspecialchars($student_result['result_data']) : ''; ?></textarea>
+                        <label class="form-label">Detailed Result (Subjects)</label>
+                        <div id="subjects-container">
+                            <?php
+                            $subjects = $student_result && !empty($student_result['result_data']) ? json_decode($student_result['result_data'], true) : [];
+                            if (!is_array($subjects)) $subjects = [];
+
+                            foreach($subjects as $index => $sub):
+                            ?>
+                            <div class="row mb-2 subject-row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Subject Name" value="<?php echo htmlspecialchars($sub['subject']); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" placeholder="Total" value="<?php echo htmlspecialchars($sub['total']); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" placeholder="Obtained" value="<?php echo htmlspecialchars($sub['obtained']); ?>">
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.row').remove()"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-info text-white mt-2" onclick="addSubjectRow()">+ Add Subject</button>
+                        <input type="hidden" name="result_data" id="result_data_input">
                     </div>
+
+                    <script>
+                        function addSubjectRow() {
+                            const container = document.getElementById('subjects-container');
+                            const div = document.createElement('div');
+                            div.className = 'row mb-2 subject-row';
+                            div.innerHTML = `
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" placeholder="Subject Name">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" placeholder="Total" value="100">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="number" class="form-control" placeholder="Obtained">
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.row').remove()"><i class="fas fa-times"></i></button>
+                                </div>
+                            `;
+                            container.appendChild(div);
+                        }
+
+                        document.querySelector('form').addEventListener('submit', function() {
+                            const rows = document.querySelectorAll('.subject-row');
+                            const data = [];
+                            rows.forEach(row => {
+                                const inputs = row.querySelectorAll('input');
+                                if(inputs[0].value) {
+                                    data.push({
+                                        subject: inputs[0].value,
+                                        total: inputs[1].value,
+                                        obtained: inputs[2].value
+                                    });
+                                }
+                            });
+                            document.getElementById('result_data_input').value = JSON.stringify(data);
+                        });
+                    </script>
                     <div class="mb-3">
                         <label class="form-label">Result Card PDF</label>
                         <?php if($student_result && $student_result['result_file']): ?>
                             <div class="mb-2"><a href="../<?php echo $student_result['result_file']; ?>" target="_blank">Current File</a></div>
                         <?php endif; ?>
-                        <input type="file" name="result_file" class="form-control">
+                        <input type="file" name="result_file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.csv">
+                        <small class="text-muted">Allowed types: PDF, DOC, CSV, Image</small>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                     <a href="results_list.php" class="btn btn-secondary">Cancel</a>

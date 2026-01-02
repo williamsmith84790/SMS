@@ -2,6 +2,12 @@
 $page_title = "Faculty Member";
 require_once 'includes/header.php';
 
+if (!has_permission('faculty')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $faculty = null;
 

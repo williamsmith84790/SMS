@@ -2,6 +2,12 @@
 $page_title = "Notice Details";
 require_once 'includes/header.php';
 
+if (!has_permission('notices')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $notice = null;
 
@@ -15,6 +21,7 @@ if ($id) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $conn->real_escape_string($_POST['title']);
     $content = $conn->real_escape_string($_POST['content']);
+    $link = $conn->real_escape_string($_POST['link']);
     $is_pinned = isset($_POST['is_pinned']) ? 1 : 0;
 
     // File Upload
@@ -32,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($id) {
-        $sql = "UPDATE notices SET title='$title', content='$content', is_pinned=$is_pinned, file='$file_path' WHERE id=$id";
+        $sql = "UPDATE notices SET title='$title', content='$content', link='$link', is_pinned=$is_pinned, file='$file_path' WHERE id=$id";
     } else {
-        $sql = "INSERT INTO notices (title, content, is_pinned, file) VALUES ('$title', '$content', $is_pinned, '$file_path')";
+        $sql = "INSERT INTO notices (title, content, link, is_pinned, file) VALUES ('$title', '$content', '$link', $is_pinned, '$file_path')";
     }
 
     if ($conn->query($sql)) {
@@ -63,6 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" name="is_pinned" id="is_pinned" <?php echo ($notice && $notice['is_pinned']) ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="is_pinned">Pin to Top?</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">External Link (Optional)</label>
+                        <input type="text" name="link" class="form-control" placeholder="http://..." value="<?php echo $notice ? htmlspecialchars($notice['link'] ?? '') : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Attachment (PDF/Doc)</label>

@@ -2,6 +2,12 @@
 $page_title = "Menu Item";
 require_once 'includes/header.php';
 
+if (!has_permission('menus')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $location = isset($_GET['location']) ? $_GET['location'] : 'header';
 $item = null;

@@ -2,6 +2,12 @@
 $page_title = "Manage Results";
 require_once 'includes/header.php';
 
+if (!has_permission('results')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 // Handle Delete
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
@@ -22,7 +28,10 @@ $result = $conn->query("SELECT * FROM student_results $where ORDER BY id DESC LI
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>Student Results</h4>
-    <a href="results_form.php" class="btn btn-primary"><i class="fas fa-plus"></i> Add New</a>
+    <div>
+        <a href="results_import.php" class="btn btn-success me-2"><i class="fas fa-file-csv"></i> Import CSV</a>
+        <a href="results_form.php" class="btn btn-primary"><i class="fas fa-plus"></i> Add New</a>
+    </div>
 </div>
 
 <div class="card mb-4 bg-light">

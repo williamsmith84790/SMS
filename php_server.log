@@ -1,0 +1,46 @@
+[Fri Jan  2 20:44:21 2026] PHP 8.3.6 Development Server (http://0.0.0.0:8080) started
+[Fri Jan  2 20:45:29 2026] 127.0.0.1:54948 Accepted
+[Fri Jan  2 20:45:29 2026] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'edu_portal.site_stats' doesn't exist in /app/index.php:15
+Stack trace:
+#0 /app/index.php(15): mysqli->query()
+#1 {main}
+  thrown in /app/index.php on line 15
+[Fri Jan  2 20:45:29 2026] 127.0.0.1:54948 [200]: GET /index.php - Uncaught mysqli_sql_exception: Table 'edu_portal.site_stats' doesn't exist in /app/index.php:15
+Stack trace:
+#0 /app/index.php(15): mysqli->query()
+#1 {main}
+  thrown in /app/index.php on line 15
+[Fri Jan  2 20:45:29 2026] 127.0.0.1:54948 Closing
+[Fri Jan  2 20:46:25 2026] 127.0.0.1:33252 Accepted
+[Fri Jan  2 20:46:25 2026] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'edu_portal.site_stats' doesn't exist in /app/index.php:15
+Stack trace:
+#0 /app/index.php(15): mysqli->query()
+#1 {main}
+  thrown in /app/index.php on line 15
+[Fri Jan  2 20:46:25 2026] 127.0.0.1:33252 [200]: GET /index.php - Uncaught mysqli_sql_exception: Table 'edu_portal.site_stats' doesn't exist in /app/index.php:15
+Stack trace:
+#0 /app/index.php(15): mysqli->query()
+#1 {main}
+  thrown in /app/index.php on line 15
+[Fri Jan  2 20:46:25 2026] 127.0.0.1:33252 Closing
+[Fri Jan  2 20:46:51 2026] 127.0.0.1:46994 Accepted
+[Fri Jan  2 20:46:51 2026] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'edu_portal.site_stats' doesn't exist in /app/index.php:15
+Stack trace:
+#0 /app/index.php(15): mysqli->query()
+#1 {main}
+  thrown in /app/index.php on line 15
+[Fri Jan  2 20:46:51 2026] 127.0.0.1:46994 [200]: GET /index.php - Uncaught mysqli_sql_exception: Table 'edu_portal.site_stats' doesn't exist in /app/index.php:15
+Stack trace:
+#0 /app/index.php(15): mysqli->query()
+#1 {main}
+  thrown in /app/index.php on line 15
+[Fri Jan  2 20:46:51 2026] 127.0.0.1:46994 Closing
+[Fri Jan  2 20:48:06 2026] 127.0.0.1:39966 Accepted
+[Fri Jan  2 20:48:06 2026] 127.0.0.1:39966 [200]: GET /index.php
+[Fri Jan  2 20:48:06 2026] 127.0.0.1:39966 Closing
+[Fri Jan  2 20:49:08 2026] 127.0.0.1:54822 Accepted
+[Fri Jan  2 20:49:08 2026] 127.0.0.1:54822 [200]: GET /index.php
+[Fri Jan  2 20:49:08 2026] 127.0.0.1:54822 Closing
+[Fri Jan  2 20:49:09 2026] 127.0.0.1:54830 Accepted
+[Fri Jan  2 20:49:09 2026] 127.0.0.1:54830 [200]: GET /gallery.php
+[Fri Jan  2 20:49:09 2026] 127.0.0.1:54830 Closing

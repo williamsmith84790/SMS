@@ -87,7 +87,7 @@ CREATE TABLE `notices` (
   `title` varchar(200) NOT NULL,
   `content` longtext NOT NULL,
   `file` varchar(255) DEFAULT NULL,
-  `date_posted` date NOT NULL DEFAULT current_timestamp(),
+  `date_posted` datetime NOT NULL DEFAULT current_timestamp(),
   `is_pinned` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -135,7 +135,7 @@ CREATE TABLE `gallery_albums` (
   `title` varchar(200) NOT NULL,
   `description` text DEFAULT NULL,
   `cover_image` varchar(255) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

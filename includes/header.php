@@ -116,6 +116,14 @@ function render_menu_item($item, $level = 0) {
             line-height: 1.6;
         }
 
+        /* Wider Container */
+        @media (min-width: 1400px) {
+            .container { max-width: 1440px; }
+        }
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            .container { max-width: 1240px; }
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Merriweather', serif;
             color: var(--primary-color);
@@ -126,9 +134,9 @@ function render_menu_item($item, $level = 0) {
         a:hover { color: var(--secondary-color); }
 
         /* --- Ticker (Notice Bar) --- */
-        /* Updated: Not full width, contained */
-        .notice-wrapper { background-color: var(--white); border-bottom: 1px solid #ddd; }
-        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-radius: 4px; margin-top: 10px; }
+        /* Updated: 3px gap below */
+        .notice-wrapper { background-color: var(--secondary-color); padding: 0; border: none; margin-bottom: 3px; }
+        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; margin: 0; border-radius: 0; }
         .notice-label { background: #8a0000; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
         .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 130px; right: 0; top: 0; bottom: 0; }
         .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 35s linear infinite; }
@@ -198,7 +206,8 @@ function render_menu_item($item, $level = 0) {
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .card-header { background-color: var(--white); border-bottom: 1px solid #eee; padding: 20px; font-family: 'Merriweather', serif; font-weight: 700; color: var(--primary-color); }
 
-        main { min-height: 60vh; padding: 50px 0; }
+        main { min-height: 60vh; padding: 0 0 50px 0; }
+        .slider-img { height: 500px; object-fit: cover; }
         .section-title { position: relative; margin-bottom: 40px; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--secondary-color); margin-top: 15px; border-radius: 2px; }
 
@@ -225,6 +234,11 @@ function render_menu_item($item, $level = 0) {
       </div>
       <div class="modal-body p-4 lead">
         <?php echo nl2br(htmlspecialchars($active_alert['message'])); ?>
+        <?php if(!empty($active_alert['link'])): ?>
+            <div class="mt-3 text-end">
+                <a href="<?php echo htmlspecialchars($active_alert['link']); ?>" class="btn btn-warning text-white fw-bold">Learn More</a>
+            </div>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -241,33 +255,11 @@ function render_menu_item($item, $level = 0) {
                 <a href="tel:<?php echo htmlspecialchars($contact_phone); ?>"><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($contact_phone); ?></a>
             </div>
             <div class="social-icons">
-                <a href="admin/login.php"><i class="fas fa-user-shield"></i> Staff Login</a>
-                <span class="divider">|</span>
                 <?php if($social_links['facebook'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['facebook']); ?>" target="_blank"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
                 <?php if($social_links['twitter'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['twitter']); ?>" target="_blank"><i class="fab fa-twitter"></i></a><?php endif; ?>
                 <?php if($social_links['linkedin'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['linkedin']); ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>
                 <?php if($social_links['instagram'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['instagram']); ?>" target="_blank"><i class="fab fa-instagram"></i></a><?php endif; ?>
                 <a href="<?php echo htmlspecialchars($apply_link); ?>" class="btn btn-warning btn-sm ms-3 rounded-pill px-3 shadow-sm">Apply Online</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Notice Bar (Ticker) - Moved inside container and below top bar for cleaner look, or just restricted width -->
-<div class="notice-wrapper">
-    <div class="container">
-        <div class="notice-bar">
-            <div class="notice-label">NEWS UPDATES</div>
-            <div class="marquee-container">
-                <div class="marquee-content">
-                    <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
-                        <?php while($item = $ticker_result->fetch_assoc()): ?>
-                            <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
-                    <?php endif; ?>
-                </div>
             </div>
         </div>
     </div>
@@ -285,9 +277,9 @@ function render_menu_item($item, $level = 0) {
                   <i class="fas fa-circle fa-stack-2x" style="color: #e0e0e0;"></i>
                   <i class="fas fa-graduation-cap fa-stack-1x"></i>
                 </span>
+                <span><?php echo htmlspecialchars($site_name); ?></span>
             </div>
         <?php endif; ?>
-        <span><?php echo htmlspecialchars($site_name); ?></span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
@@ -303,5 +295,32 @@ function render_menu_item($item, $level = 0) {
     </div>
   </div>
 </nav>
+
+<!-- Notice Bar (Ticker) - Moved below navbar -->
+<div class="notice-wrapper">
+    <div class="container">
+        <div class="notice-bar">
+            <div class="notice-label">LATEST UPDATES</div>
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
+                        <?php while($item = $ticker_result->fetch_assoc()): ?>
+                            <span>
+                                <i class="fas fa-bullhorn" style="margin-right: 8px;"></i>
+                                <?php if(!empty($item['link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($item['link']); ?>" style="color: white; text-decoration: underline;"><?php echo htmlspecialchars($item['content']); ?></a>
+                                <?php else: ?>
+                                    <?php echo htmlspecialchars($item['content']); ?>
+                                <?php endif; ?>
+                            </span>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <main class="container">
