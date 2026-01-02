@@ -23,6 +23,15 @@ $site_logo = isset($settings['site_logo']) && !empty($settings['site_logo']) ? $
 $site_name = isset($settings['site_name']) ? $settings['site_name'] : SITE_NAME;
 $contact_phone = isset($settings['contact_phone']) ? $settings['contact_phone'] : '1800 000 0000';
 $contact_email = isset($settings['contact_email']) ? $settings['contact_email'] : 'info@eduportal.org';
+$apply_link = isset($settings['header_apply_link']) && !empty($settings['header_apply_link']) ? $settings['header_apply_link'] : 'downloads.php';
+
+// Social Links
+$social_links = [
+    'facebook' => isset($settings['social_facebook']) ? $settings['social_facebook'] : '#',
+    'twitter' => isset($settings['social_twitter']) ? $settings['social_twitter'] : '#',
+    'instagram' => isset($settings['social_instagram']) ? $settings['social_instagram'] : '#',
+    'linkedin' => isset($settings['social_linkedin']) ? $settings['social_linkedin'] : '#',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +41,7 @@ $contact_email = isset($settings['contact_email']) ? $settings['contact_email'] 
     <title><?php echo isset($page_title) ? $page_title . ' - ' . $site_name : $site_name; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Open Sans', sans-serif; background-color: #f9f9f9; }
 
@@ -141,11 +151,11 @@ $contact_email = isset($settings['contact_email']) ? $settings['contact_email'] 
             <div class="social-icons">
                 <a href="admin/login.php"><i class="fas fa-user-lock"></i> Staff Login</a>
                 <span class="divider">|</span>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="downloads.php" class="btn btn-warning btn-sm text-dark ms-2 fw-bold" style="padding: 2px 10px; font-size: 0.75rem;">Apply Online</a>
+                <?php if($social_links['facebook'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['facebook']); ?>" target="_blank"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
+                <?php if($social_links['twitter'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['twitter']); ?>" target="_blank"><i class="fab fa-twitter"></i></a><?php endif; ?>
+                <?php if($social_links['linkedin'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['linkedin']); ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>
+                <?php if($social_links['instagram'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['instagram']); ?>" target="_blank"><i class="fab fa-instagram"></i></a><?php endif; ?>
+                <a href="<?php echo htmlspecialchars($apply_link); ?>" class="btn btn-warning btn-sm text-dark ms-2 fw-bold" style="padding: 2px 10px; font-size: 0.75rem;">Apply Online</a>
             </div>
         </div>
     </div>

@@ -31,7 +31,7 @@
             <!-- Col 1: About -->
             <div class="col-lg-3 col-md-6 mb-4">
                 <h3>About Us</h3>
-                <p>We are dedicated to providing quality education and fostering an environment of academic excellence and personal growth for all our students.</p>
+                <p><?php echo isset($settings['footer_about_text']) ? htmlspecialchars($settings['footer_about_text']) : 'We are dedicated to providing quality education.'; ?></p>
                 <?php if(isset($site_logo) && $site_logo): ?>
                     <img src="<?php echo htmlspecialchars($site_logo); ?>" alt="Logo" style="max-height: 50px; opacity: 0.8; margin-top: 10px;">
                 <?php endif; ?>
@@ -82,10 +82,10 @@
                 <div class="mt-4">
                     <h3>Follow Us</h3>
                     <div class="footer-social" style="margin-left: -15px;">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <?php if(isset($settings['social_facebook']) && $settings['social_facebook'] != '#'): ?><a href="<?php echo htmlspecialchars($settings['social_facebook']); ?>" target="_blank"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
+                        <?php if(isset($settings['social_twitter']) && $settings['social_twitter'] != '#'): ?><a href="<?php echo htmlspecialchars($settings['social_twitter']); ?>" target="_blank"><i class="fab fa-twitter"></i></a><?php endif; ?>
+                        <?php if(isset($settings['social_instagram']) && $settings['social_instagram'] != '#'): ?><a href="<?php echo htmlspecialchars($settings['social_instagram']); ?>" target="_blank"><i class="fab fa-instagram"></i></a><?php endif; ?>
+                        <?php if(isset($settings['social_linkedin']) && $settings['social_linkedin'] != '#'): ?><a href="<?php echo htmlspecialchars($settings['social_linkedin']); ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,8 @@
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start">
                     <p class="copyright-text">
-                        &copy; <?php echo date('Y'); ?> <strong><?php echo htmlspecialchars($settings['site_name'] ?? 'EduPortal'); ?></strong>. All Rights Reserved.
+                        &copy; <?php echo date('Y'); ?> <strong><?php echo htmlspecialchars($settings['site_name'] ?? 'EduPortal'); ?></strong>.
+                        <?php echo isset($settings['footer_copyright_text']) ? htmlspecialchars($settings['footer_copyright_text']) : 'All Rights Reserved'; ?>
                     </p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">

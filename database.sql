@@ -261,7 +261,14 @@ INSERT INTO `site_settings` (`setting_key`, `setting_value`) VALUES
 ('site_name', 'EduPortal'),
 ('contact_email', 'info@eduportal.com'),
 ('contact_phone', '+123 456 7890'),
-('contact_address', '123 Education Street, Knowledge City');
+('contact_address', '123 Education Street, Knowledge City'),
+('social_facebook', '#'),
+('social_twitter', '#'),
+('social_instagram', '#'),
+('social_linkedin', '#'),
+('footer_about_text', 'We are dedicated to providing quality education and fostering an environment of academic excellence and personal growth for all our students.'),
+('header_apply_link', 'downloads.php'),
+('footer_copyright_text', 'All Rights Reserved');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
