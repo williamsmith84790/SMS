@@ -12,23 +12,40 @@ require_once 'auth_check.php';
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Summernote CSS (Rich Text Editor) -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        .sidebar { min-height: 100vh; background: #343a40; color: white; }
-        .sidebar a { color: rgba(255,255,255,.8); text-decoration: none; padding: 10px 15px; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .sidebar a:hover, .sidebar a.active { background: #495057; color: white; }
-        .sidebar i { width: 25px; text-align: center; margin-right: 5px; }
-        .content { padding: 20px; }
+        :root {
+            --primary-color: #002147;
+            --secondary-color: #FDBB00;
+        }
+        body { font-family: 'Open Sans', sans-serif; background-color: #f4f6f9; }
+
+        .sidebar { min-height: 100vh; background: var(--primary-color); color: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+        .sidebar .brand { font-family: 'Merriweather', serif; font-size: 1.2rem; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: block; color: #fff; text-decoration: none; }
+        .sidebar a.nav-link { color: rgba(255,255,255,.8); text-decoration: none; padding: 12px 20px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; font-size: 0.9rem; }
+        .sidebar a.nav-link:hover, .sidebar a.nav-link.active { background: rgba(255,255,255,0.1); color: var(--secondary-color); border-left: 4px solid var(--secondary-color); padding-left: 16px; }
+        .sidebar i { width: 25px; text-align: center; margin-right: 10px; opacity: 0.8; }
+
+        .content { padding: 30px; }
+
+        .card { border: none; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .card-header { background-color: #fff; border-bottom: 1px solid #eee; padding: 15px 20px; font-weight: bold; color: var(--primary-color); border-radius: 8px 8px 0 0 !important; }
+
+        .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .btn-primary:hover { background-color: #00152e; border-color: #00152e; }
+
+        .table thead th { background-color: #f8f9fa; border-bottom: 2px solid #eee; color: #555; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <div class="d-flex">
     <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 250px;">
-        <a href="dashboard.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <span class="fs-4">Admin Panel</span>
+    <div class="sidebar d-flex flex-column flex-shrink-0 text-white" style="width: 260px;">
+        <a href="dashboard.php" class="brand">
+            <i class="fas fa-graduation-cap text-warning"></i> <?php echo SITE_NAME; ?> <small style="font-size: 0.7rem; display: block; opacity: 0.6; margin-top: 5px;">ADMIN PANEL</small>
         </a>
-        <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item"><a href="dashboard.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="slider_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'slider') !== false ? 'active' : ''; ?>"><i class="fas fa-images"></i> Sliders</a></li>
@@ -50,21 +67,25 @@ require_once 'auth_check.php';
 
     <!-- Main Content -->
     <div class="flex-grow-1" style="max-height: 100vh; overflow-y: auto;">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom px-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 shadow-sm sticky-top">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1"><?php echo isset($page_title) ? $page_title : 'Dashboard'; ?></span>
+                <span class="navbar-brand mb-0 h1" style="font-family: 'Merriweather', serif; font-size: 1.1rem; color: #333;"><?php echo isset($page_title) ? $page_title : 'Dashboard'; ?></span>
+                <div class="ms-auto">
+                    <span class="text-muted small me-2">Logged in as <strong><?php echo $_SESSION['admin_username'] ?? 'Admin'; ?></strong></span>
+                    <i class="fas fa-user-circle fa-lg text-secondary"></i>
+                </div>
             </div>
         </nav>
         <div class="content">
             <?php if(isset($_SESSION['msg_success'])): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?php echo $_SESSION['msg_success']; unset($_SESSION['msg_success']); ?>
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> <?php echo $_SESSION['msg_success']; unset($_SESSION['msg_success']); ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             <?php if(isset($_SESSION['msg_error'])): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?php echo $_SESSION['msg_error']; unset($_SESSION['msg_error']); ?>
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> <?php echo $_SESSION['msg_error']; unset($_SESSION['msg_error']); ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>

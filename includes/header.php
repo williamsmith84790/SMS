@@ -73,7 +73,7 @@ function render_menu_item($item, $level = 0) {
 
         echo '<li class="' . $dropdown_class . '">';
         echo '<a class="' . $link_class . '" href="' . $url . '" data-bs-toggle="dropdown">' . $label . '</a>';
-        echo '<ul class="dropdown-menu">';
+        echo '<ul class="dropdown-menu shadow-lg border-0">';
         foreach ($item['children'] as $child) {
             render_menu_item($child, $level + 1);
         }
@@ -97,66 +97,115 @@ function render_menu_item($item, $level = 0) {
     <title><?php echo isset($page_title) ? $page_title . ' - ' . $site_name : $site_name; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Merriweather (Serif) for headings, Open Sans (Sans) for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Open Sans', sans-serif; background-color: #f9f9f9; }
+        :root {
+            --primary-color: #002147; /* Deep Royal Blue */
+            --secondary-color: #FDBB00; /* Academic Gold */
+            --text-color: #333333;
+            --bg-light: #f4f6f9;
+            --white: #ffffff;
+        }
 
-        /* Typography override for a more academic look */
-        h1, h2, h3, h4, h5, h6 { font-family: 'Roboto', sans-serif; font-weight: 700; color: #333; }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        a { color: var(--primary-color); text-decoration: none; transition: 0.3s; }
+        a:hover { color: var(--secondary-color); }
 
         /* --- Ticker (Notice Bar) --- */
-        .notice-bar { background-color: #cf142b; color: white; font-size: 0.9rem; height: 35px; line-height: 35px; overflow: hidden; position: relative; }
-        .notice-label { background: #a30e1f; padding: 0 15px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; }
-        .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 100px; right: 0; top: 0; bottom: 0; }
-        .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 30s linear infinite; }
-        .marquee-content span { display: inline-block; margin-right: 40px; }
+        .notice-bar { background-color: var(--secondary-color); color: var(--primary-color); font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .notice-label { background: #e0a800; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
+        .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 130px; right: 0; top: 0; bottom: 0; }
+        .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 35s linear infinite; }
+        .marquee-content span { display: inline-block; margin-right: 50px; font-weight: 600; }
         @keyframes marquee {
             0% { transform: translate(0, 0); }
             100% { transform: translate(-100%, 0); }
         }
 
         /* --- Top Bar --- */
-        .top-bar { background-color: #002147; color: #ccc; font-size: 0.85rem; padding: 8px 0; }
-        .top-bar a { color: #ccc; text-decoration: none; transition: color 0.3s; }
-        .top-bar a:hover { color: #fff; }
-        .top-bar i { color: #fdbb00; margin-right: 5px; }
-        .top-bar .social-icons a { margin-left: 10px; }
-        .top-bar .divider { margin: 0 10px; color: #444; }
+        .top-bar { background-color: var(--primary-color); color: #fff; font-size: 0.85rem; padding: 10px 0; border-bottom: 3px solid rgba(255,255,255,0.1); }
+        .top-bar a { color: #e0e0e0; font-weight: 500; }
+        .top-bar a:hover { color: var(--secondary-color); }
+        .top-bar i { color: var(--secondary-color); margin-right: 6px; }
+        .top-bar .social-icons a { margin-left: 15px; }
+        .top-bar .divider { margin: 0 12px; color: rgba(255,255,255,0.3); }
 
         /* --- Main Navbar --- */
-        .navbar-main { background-color: #fff; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .navbar-brand img { height: 50px; width: auto; }
-        .navbar-brand span { color: #002147; font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-left: 10px; vertical-align: middle; }
+        .navbar-main { background-color: var(--white); padding: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .navbar-brand { padding: 15px 0; }
+        .navbar-brand img { height: 60px; width: auto; }
+        .navbar-brand span { color: var(--primary-color); font-size: 1.6rem; font-family: 'Merriweather', serif; font-weight: 700; text-transform: uppercase; margin-left: 12px; vertical-align: middle; letter-spacing: -0.5px; }
 
-        .nav-link { color: #333 !important; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; padding: 10px 15px !important; transition: all 0.3s; }
-        .nav-link:hover, .nav-item.show .nav-link { color: #002147 !important; }
-        .nav-item.active .nav-link { color: #002147 !important; }
+        .navbar-nav .nav-link {
+            color: var(--primary-color) !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 25px 18px !important;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+        }
+        .navbar-nav .nav-link:hover, .navbar-nav .nav-item.show .nav-link {
+            color: var(--secondary-color) !important;
+            border-bottom: 3px solid var(--secondary-color);
+            background-color: rgba(253, 187, 0, 0.05);
+        }
+        .navbar-nav .nav-item.active .nav-link {
+            color: var(--secondary-color) !important;
+            border-bottom: 3px solid var(--secondary-color);
+        }
 
         /* Dropdown Styling */
-        .dropdown-menu { border: none; border-top: 3px solid #fdbb00; border-radius: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding: 0; margin-top: 0; }
-        .dropdown-item { padding: 10px 20px; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee; transition: all 0.2s; }
+        .dropdown-menu { border-top: 3px solid var(--secondary-color); border-radius: 0 0 5px 5px; padding: 0; margin-top: 0; background: var(--white); }
+        .dropdown-item { padding: 12px 20px; font-size: 0.9rem; color: #555; border-bottom: 1px solid #f0f0f0; transition: all 0.2s; font-family: 'Open Sans', sans-serif; font-weight: 600; }
         .dropdown-item:last-child { border-bottom: none; }
-        .dropdown-item:hover { background-color: #f8f9fa; color: #002147; padding-left: 25px; }
+        .dropdown-item:hover { background-color: #f8f9fa; color: var(--primary-color); padding-left: 25px; border-left: 3px solid var(--secondary-color); }
 
         /* Multilevel Dropdown */
         @media (min-width: 992px) {
-            .navbar-expand-lg .navbar-nav .dropdown-menu { min-width: 220px; }
+            .navbar-expand-lg .navbar-nav .dropdown-menu { min-width: 240px; }
             .dropdown-submenu { position: relative; }
             .dropdown-submenu > .dropdown-menu { top: 0; left: 100%; margin-top: -3px; display: none; }
             .dropdown-submenu:hover > .dropdown-menu { display: block; }
-            .dropdown-submenu > a::after { content: "\f0da"; font-family: "Font Awesome 5 Free"; font-weight: 900; float: right; margin-top: 4px; }
+            .dropdown-submenu > a::after { content: "\f0da"; font-family: "Font Awesome 5 Free"; font-weight: 900; float: right; margin-top: 4px; color: #ccc; }
+            .dropdown-submenu:hover > a::after { color: var(--primary-color); }
         }
 
-        /* --- Global Styles --- */
-        main { min-height: 60vh; padding: 40px 0; }
-        .section-title { position: relative; margin-bottom: 30px; }
-        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background: #fdbb00; margin-top: 10px; }
+        /* --- Common UI Components --- */
+        .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); padding: 10px 25px; border-radius: 4px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
+        .btn-primary:hover { background-color: #00152e; border-color: #00152e; }
+
+        .btn-warning { background-color: var(--secondary-color); border-color: var(--secondary-color); color: var(--primary-color); font-weight: 700; }
+        .btn-warning:hover { background-color: #e0a800; border-color: #e0a800; color: var(--primary-color); }
+
+        .card { border: none; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; background: var(--white); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .card-header { background-color: var(--white); border-bottom: 1px solid #eee; padding: 20px; font-family: 'Merriweather', serif; font-weight: 700; color: var(--primary-color); }
+
+        main { min-height: 60vh; padding: 50px 0; }
+        .section-title { position: relative; margin-bottom: 40px; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--secondary-color); margin-top: 15px; border-radius: 2px; }
 
         /* Mobile Adjustments */
         @media (max-width: 991px) {
             .top-bar { text-align: center; }
             .top-bar .d-flex { justify-content: center !important; flex-wrap: wrap; }
             .top-bar .contact-info, .top-bar .social-icons { margin-bottom: 5px; width: 100%; }
+            .navbar-brand span { font-size: 1.2rem; }
+            .navbar-nav .nav-link { padding: 12px 15px !important; border-bottom: 1px solid #eee; }
         }
     </style>
 </head>
@@ -164,14 +213,14 @@ function render_menu_item($item, $level = 0) {
 
 <!-- Urgent Alert Modal -->
 <?php if ($active_alert): ?>
-<div class="modal fade show" id="urgentAlertModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);">
+<div class="modal fade show" id="urgentAlertModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5); z-index: 2000;">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-danger text-white">
         <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> <?php echo htmlspecialchars($active_alert['title']); ?></h5>
-        <button type="button" class="btn-close" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
+        <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body p-4 lead">
         <?php echo nl2br(htmlspecialchars($active_alert['message'])); ?>
       </div>
     </div>
@@ -186,7 +235,7 @@ function render_menu_item($item, $level = 0) {
         <div class="marquee-content">
             <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
                 <?php while($item = $ticker_result->fetch_assoc()): ?>
-                    <span><i class="fas fa-dot-circle small"></i> <?php echo htmlspecialchars($item['content']); ?></span>
+                    <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
                 <?php endwhile; ?>
             <?php else: ?>
                 <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open for Fall 2023!</span>
@@ -205,13 +254,13 @@ function render_menu_item($item, $level = 0) {
                 <a href="tel:<?php echo htmlspecialchars($contact_phone); ?>"><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($contact_phone); ?></a>
             </div>
             <div class="social-icons">
-                <a href="admin/login.php"><i class="fas fa-user-lock"></i> Staff Login</a>
+                <a href="admin/login.php"><i class="fas fa-user-shield"></i> Staff Login</a>
                 <span class="divider">|</span>
                 <?php if($social_links['facebook'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['facebook']); ?>" target="_blank"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
                 <?php if($social_links['twitter'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['twitter']); ?>" target="_blank"><i class="fab fa-twitter"></i></a><?php endif; ?>
                 <?php if($social_links['linkedin'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['linkedin']); ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>
                 <?php if($social_links['instagram'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['instagram']); ?>" target="_blank"><i class="fab fa-instagram"></i></a><?php endif; ?>
-                <a href="<?php echo htmlspecialchars($apply_link); ?>" class="btn btn-warning btn-sm text-dark ms-2 fw-bold" style="padding: 2px 10px; font-size: 0.75rem;">Apply Online</a>
+                <a href="<?php echo htmlspecialchars($apply_link); ?>" class="btn btn-warning btn-sm ms-3 rounded-pill px-3 shadow-sm">Apply Online</a>
             </div>
         </div>
     </div>
@@ -224,7 +273,12 @@ function render_menu_item($item, $level = 0) {
         <?php if($site_logo): ?>
             <img src="<?php echo htmlspecialchars($site_logo); ?>" alt="Logo">
         <?php else: ?>
-            <i class="fas fa-graduation-cap fa-2x text-warning"></i>
+            <div class="d-flex align-items-center">
+                <span class="fa-stack fa-lg" style="font-size: 1.2rem; color: var(--primary-color);">
+                  <i class="fas fa-circle fa-stack-2x text-warning"></i>
+                  <i class="fas fa-graduation-cap fa-stack-1x fa-inverse"></i>
+                </span>
+            </div>
         <?php endif; ?>
         <span><?php echo htmlspecialchars($site_name); ?></span>
     </a>
