@@ -37,16 +37,22 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Col 2: Useful Links -->
+            <!-- Col 2: Useful Links (Dynamic) -->
             <div class="col-lg-3 col-md-6 mb-4 footer-links">
                 <h3>Useful Links</h3>
                 <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="page.php?slug=vision-mission">Vision & Mission</a></li>
-                    <li><a href="faculty.php">Our Faculty</a></li>
-                    <li><a href="downloads.php">Downloads</a></li>
-                    <li><a href="results.php">Check Results</a></li>
-                    <li><a href="contact.php">Contact Us</a></li>
+                    <?php
+                    // Fetch Footer Menu Items
+                    $footer_menu_sql = "SELECT * FROM menu_items WHERE location = 'footer' ORDER BY sort_order ASC";
+                    $footer_menu_result = $conn->query($footer_menu_sql);
+                    if ($footer_menu_result && $footer_menu_result->num_rows > 0) {
+                        while($item = $footer_menu_result->fetch_assoc()) {
+                            echo '<li><a href="' . htmlspecialchars($item['link']) . '">' . htmlspecialchars($item['label']) . '</a></li>';
+                        }
+                    } else {
+                        echo '<li><a href="index.php">Home</a></li>';
+                    }
+                    ?>
                 </ul>
             </div>
 

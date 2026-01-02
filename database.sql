@@ -270,6 +270,70 @@ INSERT INTO `site_settings` (`setting_key`, `setting_value`) VALUES
 ('header_apply_link', 'downloads.php'),
 ('footer_copyright_text', 'All Rights Reserved');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `menu_items`
+--
+
+CREATE TABLE `menu_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(100) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `sort_order` int(11) NOT NULL DEFAULT 0,
+  `location` enum('header','footer') NOT NULL DEFAULT 'header',
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `menu_items`
+--
+
+INSERT INTO `menu_items` (`id`, `label`, `link`, `parent_id`, `sort_order`, `location`) VALUES
+(1, 'Home', 'index.php', NULL, 1, 'header'),
+(2, 'About us', '#', NULL, 2, 'header'),
+(3, 'Vision & Mission', 'page.php?slug=vision-mission', 2, 1, 'header'),
+(4, 'History', 'page.php?slug=history', 2, 2, 'header'),
+(5, 'Principal\'s Message', 'page.php?slug=principal-message', 2, 3, 'header'),
+(6, 'Core Team', 'page.php?slug=core-team', 2, 4, 'header'),
+(7, 'Administration', '#', NULL, 3, 'header'),
+(8, 'Principal Office', 'page.php?slug=principal-office', 7, 1, 'header'),
+(9, 'Vice Principal Office', 'page.php?slug=vice-principal-office', 7, 2, 'header'),
+(10, 'Controller Office', 'page.php?slug=controller-office', 7, 3, 'header'),
+(11, 'Student Affairs', 'page.php?slug=student-affairs', 7, 4, 'header'),
+(12, 'Academics', '#', NULL, 4, 'header'),
+(13, 'Programs', '#', 12, 1, 'header'),
+(14, 'Intermediate', 'page.php?slug=program-intermediate', 13, 1, 'header'),
+(15, 'BS-4YDP', 'page.php?slug=program-bs-4ydp', 13, 2, 'header'),
+(16, 'Faculty', 'faculty.php', 12, 2, 'header'),
+(17, 'Admissions', '#', NULL, 5, 'header'),
+(18, 'Intermediate (Prospectus)', 'downloads.php', 17, 1, 'header'),
+(19, 'BS-4YDP (Prospectus)', 'downloads.php', 17, 2, 'header'),
+(20, 'Life at Campus', '#', NULL, 6, 'header'),
+(21, 'Facilities', 'page.php?slug=facilities', 20, 1, 'header'),
+(22, 'Societies', '#', 20, 2, 'header'),
+(23, 'College Societies', 'page.php?slug=college-societies', 22, 1, 'header'),
+(24, 'Girls Guide Association', 'page.php?slug=girls-guide', 22, 2, 'header'),
+(25, 'Co-curricular Activities', 'page.php?slug=co-curricular', 20, 3, 'header'),
+(26, 'Hostel', 'page.php?slug=hostel', 20, 4, 'header'),
+(27, 'Library', 'page.php?slug=library', 20, 5, 'header'),
+(28, 'Career Counselling', 'page.php?slug=career-counselling', 20, 6, 'header'),
+(29, 'Alumni', '#', NULL, 7, 'header'),
+(30, 'Our Best Graduates', 'alumni.php', 29, 1, 'header'),
+(31, 'Success Stories', 'page.php?slug=success-stories', 29, 2, 'header'),
+(32, 'Donate', 'page.php?slug=donate', 29, 3, 'header'),
+(33, 'Events', 'events.php', NULL, 8, 'header'),
+(34, 'Contact', 'contact.php', NULL, 9, 'header'),
+(35, 'Results', 'results.php', NULL, 10, 'header'),
+(36, 'Home', 'index.php', NULL, 1, 'footer'),
+(37, 'Vision & Mission', 'page.php?slug=vision-mission', NULL, 2, 'footer'),
+(38, 'Our Faculty', 'faculty.php', NULL, 3, 'footer'),
+(39, 'Downloads', 'downloads.php', NULL, 4, 'footer'),
+(40, 'Check Results', 'results.php', NULL, 5, 'footer'),
+(41, 'Contact Us', 'contact.php', NULL, 6, 'footer');
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

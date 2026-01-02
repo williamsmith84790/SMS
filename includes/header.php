@@ -32,6 +32,62 @@ $social_links = [
     'instagram' => isset($settings['social_instagram']) ? $settings['social_instagram'] : '#',
     'linkedin' => isset($settings['social_linkedin']) ? $settings['social_linkedin'] : '#',
 ];
+
+// Helper to build menu tree
+function build_menu_tree($items, $parentId = NULL) {
+    $branch = [];
+    foreach ($items as $item) {
+        if ($item['parent_id'] == $parentId) {
+            $children = build_menu_tree($items, $item['id']);
+            if ($children) {
+                $item['children'] = $children;
+            }
+            $branch[] = $item;
+        }
+    }
+    return $branch;
+}
+
+// Fetch Header Menu Items
+$menu_sql = "SELECT * FROM menu_items WHERE location = 'header' ORDER BY sort_order ASC";
+$menu_result = $conn->query($menu_sql);
+$raw_menu_items = [];
+while ($row = $menu_result->fetch_assoc()) {
+    $raw_menu_items[] = $row;
+}
+$header_menu_tree = build_menu_tree($raw_menu_items);
+
+// Recursive Function to Render Menu
+function render_menu_item($item, $level = 0) {
+    $has_children = isset($item['children']) && count($item['children']) > 0;
+    $url = htmlspecialchars($item['link']);
+    $label = htmlspecialchars($item['label']);
+
+    // Check if external link
+    $target = (strpos($url, 'http') === 0) ? '_blank' : '_self';
+
+    if ($has_children) {
+        // Dropdown
+        $dropdown_class = ($level === 0) ? 'nav-item dropdown' : 'dropdown-submenu';
+        $link_class = ($level === 0) ? 'nav-link dropdown-toggle' : 'dropdown-item dropdown-toggle';
+
+        echo '<li class="' . $dropdown_class . '">';
+        echo '<a class="' . $link_class . '" href="' . $url . '" data-bs-toggle="dropdown">' . $label . '</a>';
+        echo '<ul class="dropdown-menu">';
+        foreach ($item['children'] as $child) {
+            render_menu_item($child, $level + 1);
+        }
+        echo '</ul>';
+        echo '</li>';
+    } else {
+        // Standard Link
+        if ($level === 0) {
+            echo '<li class="nav-item"><a class="nav-link" href="' . $url . '" target="' . $target . '">' . $label . '</a></li>';
+        } else {
+            echo '<li><a class="dropdown-item" href="' . $url . '" target="' . $target . '">' . $label . '</a></li>';
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -177,80 +233,11 @@ $social_links = [
     </button>
     <div class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">About us</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="page.php?slug=vision-mission">Vision & Mission</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=history">History</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=principal-message">Principal's Message</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=core-team">Core Team</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Administration</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="page.php?slug=principal-office">Principal Office</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=vice-principal-office">Vice Principal Office</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=controller-office">Controller Office</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=student-affairs">Student Affairs</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Academics</a>
-            <ul class="dropdown-menu">
-                <li class="dropdown-submenu">
-                    <a class="dropdown-item" href="#">Programs</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="page.php?slug=program-intermediate">Intermediate</a></li>
-                        <li><a class="dropdown-item" href="page.php?slug=program-bs-4ydp">BS-4YDP</a></li>
-                    </ul>
-                </li>
-                <li><a class="dropdown-item" href="faculty.php">Faculty</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Admissions</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="downloads.php">Intermediate (Prospectus)</a></li>
-                <li><a class="dropdown-item" href="downloads.php">BS-4YDP (Prospectus)</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Life at Campus</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="page.php?slug=facilities">Facilities</a></li>
-                <li class="dropdown-submenu">
-                    <a class="dropdown-item" href="#">Societies</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="page.php?slug=college-societies">College Societies</a></li>
-                        <li><a class="dropdown-item" href="page.php?slug=girls-guide">Girls Guide Association</a></li>
-                    </ul>
-                </li>
-                <li><a class="dropdown-item" href="page.php?slug=co-curricular">Co-curricular Activities</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=hostel">Hostel</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=library">Library</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=career-counselling">Career Counselling</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Alumni</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="alumni.php">Our Best Graduates</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=success-stories">Success Stories</a></li>
-                <li><a class="dropdown-item" href="page.php?slug=donate">Donate</a></li>
-            </ul>
-        </li>
-
-        <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-        <li class="nav-item"><a class="nav-link" href="results.php"><i class="fas fa-search"></i> Results</a></li>
+        <?php
+        foreach ($header_menu_tree as $item) {
+            render_menu_item($item);
+        }
+        ?>
       </ul>
     </div>
   </div>
