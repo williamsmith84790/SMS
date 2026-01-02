@@ -51,6 +51,7 @@ require_once 'auth_check.php';
             <li><a href="slider_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'slider') !== false ? 'active' : ''; ?>"><i class="fas fa-images"></i> Sliders</a></li>
             <li><a href="menus.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'menu') !== false ? 'active' : ''; ?>"><i class="fas fa-bars"></i> Menus</a></li>
             <li><a href="ticker_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'ticker') !== false ? 'active' : ''; ?>"><i class="fas fa-scroll"></i> News Ticker</a></li>
+            <li><a href="events_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'events') !== false ? 'active' : ''; ?>"><i class="fas fa-calendar-alt"></i> Events</a></li>
             <li><a href="alerts_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'alerts') !== false ? 'active' : ''; ?>"><i class="fas fa-exclamation-triangle"></i> Urgent Alerts</a></li>
             <li><a href="notices_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'notices') !== false ? 'active' : ''; ?>"><i class="fas fa-bullhorn"></i> Notices</a></li>
             <li><a href="pages_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'pages') !== false ? 'active' : ''; ?>"><i class="fas fa-file-alt"></i> Pages</a></li>

@@ -31,12 +31,31 @@ CREATE TABLE `slider_images` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `events`
+--
+
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `date` date NOT NULL,
+  `time` varchar(50) DEFAULT NULL,
+  `location` varchar(200) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ticker_items`
 --
 
 CREATE TABLE `ticker_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(500) NOT NULL,
+  `link` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
@@ -131,6 +150,8 @@ CREATE TABLE `gallery_images` (
   `album_id` int(11) NOT NULL,
   `image` varchar(255) NOT NULL,
   `caption` varchar(200) DEFAULT NULL,
+  `media_type` enum('image','video') NOT NULL DEFAULT 'image',
+  `video_embed` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `album_id` (`album_id`),
   CONSTRAINT `gallery_images_ibfk_1` FOREIGN KEY (`album_id`) REFERENCES `gallery_albums` (`id`) ON DELETE CASCADE

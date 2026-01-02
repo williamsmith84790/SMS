@@ -11,13 +11,14 @@ if (isset($_GET['delete'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = $conn->real_escape_string($_POST['content']);
+    $link = $conn->real_escape_string($_POST['link']);
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
     if (isset($_POST['id']) && !empty($_POST['id'])) {
         $id = (int)$_POST['id'];
-        $sql = "UPDATE ticker_items SET content='$content', is_active=$is_active WHERE id=$id";
+        $sql = "UPDATE ticker_items SET content='$content', link='$link', is_active=$is_active WHERE id=$id";
     } else {
-        $sql = "INSERT INTO ticker_items (content, is_active) VALUES ('$content', $is_active)";
+        $sql = "INSERT INTO ticker_items (content, link, is_active) VALUES ('$content', '$link', $is_active)";
     }
 
     $conn->query($sql);
@@ -50,6 +51,10 @@ $result = $conn->query("SELECT * FROM ticker_items ORDER BY created_at DESC");
                         <label class="form-label">Content</label>
                         <textarea name="content" class="form-control" rows="3" required><?php echo $edit_item ? htmlspecialchars($edit_item['content']) : ''; ?></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Link (Optional)</label>
+                        <input type="text" name="link" class="form-control" placeholder="e.g., http://google.com" value="<?php echo $edit_item && isset($edit_item['link']) ? htmlspecialchars($edit_item['link']) : ''; ?>">
+                    </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" name="is_active" id="is_active" <?php echo ($edit_item && $edit_item['is_active']) ? 'checked' : 'checked'; ?>>
                         <label class="form-check-label" for="is_active">Active?</label>
@@ -73,7 +78,7 @@ $result = $conn->query("SELECT * FROM ticker_items ORDER BY created_at DESC");
                     <thead>
                         <tr>
                             <th>Content</th>
-                            <th>Date</th>
+                            <th>Link</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -82,7 +87,13 @@ $result = $conn->query("SELECT * FROM ticker_items ORDER BY created_at DESC");
                         <?php while($row = $result->fetch_assoc()): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($row['content']); ?></td>
-                            <td><?php echo date('d M Y', strtotime($row['created_at'])); ?></td>
+                            <td>
+                                <?php if(!empty($row['link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($row['link']); ?>" target="_blank"><i class="fas fa-external-link-alt"></i> Link</a>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <span class="badge <?php echo $row['is_active'] ? 'bg-success' : 'bg-secondary'; ?>">
                                     <?php echo $row['is_active'] ? 'Active' : 'Inactive'; ?>
