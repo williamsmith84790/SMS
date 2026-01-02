@@ -21,6 +21,7 @@ if ($id) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $conn->real_escape_string($_POST['title']);
     $content = $conn->real_escape_string($_POST['content']);
+    $link = $conn->real_escape_string($_POST['link']);
     $is_pinned = isset($_POST['is_pinned']) ? 1 : 0;
 
     // File Upload
@@ -38,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($id) {
-        $sql = "UPDATE notices SET title='$title', content='$content', is_pinned=$is_pinned, file='$file_path' WHERE id=$id";
+        $sql = "UPDATE notices SET title='$title', content='$content', link='$link', is_pinned=$is_pinned, file='$file_path' WHERE id=$id";
     } else {
-        $sql = "INSERT INTO notices (title, content, is_pinned, file) VALUES ('$title', '$content', $is_pinned, '$file_path')";
+        $sql = "INSERT INTO notices (title, content, link, is_pinned, file) VALUES ('$title', '$content', '$link', $is_pinned, '$file_path')";
     }
 
     if ($conn->query($sql)) {
@@ -65,6 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="mb-3">
                         <label class="form-label">Title</label>
                         <input type="text" name="title" class="form-control" required value="<?php echo $notice ? htmlspecialchars($notice['title']) : ''; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Link (Optional)</label>
+                        <input type="text" name="link" class="form-control" placeholder="e.g., http://google.com" value="<?php echo $notice && isset($notice['link']) ? htmlspecialchars($notice['link']) : ''; ?>">
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" name="is_pinned" id="is_pinned" <?php echo ($notice && $notice['is_pinned']) ? 'checked' : ''; ?>>

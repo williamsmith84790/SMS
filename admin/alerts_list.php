@@ -24,16 +24,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = $conn->real_escape_string($_POST['message']);
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
-    // If setting this to active, deactivate all others (assuming one alert at a time is best)
-    if ($is_active) {
-        $conn->query("UPDATE urgent_alerts SET is_active = 0");
-    }
+    // Allow multiple active alerts
+    // if ($is_active) {
+    //    $conn->query("UPDATE urgent_alerts SET is_active = 0");
+    // }
+
+    $link = $conn->real_escape_string($_POST['link']);
 
     if (isset($_POST['id']) && !empty($_POST['id'])) {
         $id = (int)$_POST['id'];
-        $sql = "UPDATE urgent_alerts SET title='$title', message='$message', is_active=$is_active WHERE id=$id";
+        $sql = "UPDATE urgent_alerts SET title='$title', message='$message', link='$link', is_active=$is_active WHERE id=$id";
     } else {
-        $sql = "INSERT INTO urgent_alerts (title, message, is_active) VALUES ('$title', '$message', $is_active)";
+        $sql = "INSERT INTO urgent_alerts (title, message, link, is_active) VALUES ('$title', '$message', '$link', $is_active)";
     }
 
     $conn->query($sql);
@@ -72,6 +74,10 @@ $result = $conn->query("SELECT * FROM urgent_alerts ORDER BY created_at DESC");
                     <div class="mb-3">
                         <label class="form-label">Message</label>
                         <textarea name="message" class="form-control" rows="4" required><?php echo $edit_item ? htmlspecialchars($edit_item['message']) : ''; ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Link (Optional)</label>
+                        <input type="text" name="link" class="form-control" placeholder="e.g., http://google.com" value="<?php echo $edit_item && isset($edit_item['link']) ? htmlspecialchars($edit_item['link']) : ''; ?>">
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" name="is_active" id="is_active" <?php echo ($edit_item && $edit_item['is_active']) ? 'checked' : ''; ?>>

@@ -126,7 +126,11 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
                             <div class="d-flex w-100 justify-content-between">
                                 <h6 class="mb-1 text-primary">
                                     <?php if($notice['is_pinned']): ?><i class="fas fa-thumbtack text-danger"></i><?php endif; ?>
-                                    <?php echo htmlspecialchars($notice['title']); ?>
+                                    <?php if(!empty($notice['link'])): ?>
+                                        <a href="<?php echo htmlspecialchars($notice['link']); ?>" target="_blank" class="text-decoration-none"><?php echo htmlspecialchars($notice['title']); ?></a>
+                                    <?php else: ?>
+                                        <?php echo htmlspecialchars($notice['title']); ?>
+                                    <?php endif; ?>
                                 </h6>
                                 <small class="text-muted"><?php echo date('M d', strtotime($notice['date_posted'])); ?></small>
                             </div>

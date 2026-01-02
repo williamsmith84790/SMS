@@ -6,3 +6,6 @@ db.sqlite3
 /staticfiles/
 .DS_Store
 staticfiles/
+my_mysql_data/
+my_mysql_data/
+my_mysql_data/

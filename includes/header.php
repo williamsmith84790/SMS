@@ -3,9 +3,14 @@
 require_once __DIR__ . '/../config.php';
 
 // Fetch active urgent alert
-$alert_sql = "SELECT * FROM urgent_alerts WHERE is_active = 1 ORDER BY created_at DESC LIMIT 1";
+$active_alerts = [];
+$alert_sql = "SELECT * FROM urgent_alerts WHERE is_active = 1 ORDER BY created_at DESC";
 $alert_result = $conn->query($alert_sql);
-$active_alert = ($alert_result && $alert_result->num_rows > 0) ? $alert_result->fetch_assoc() : null;
+if ($alert_result && $alert_result->num_rows > 0) {
+    while($row = $alert_result->fetch_assoc()) {
+        $active_alerts[] = $row;
+    }
+}
 
 // Fetch ticker items
 $ticker_sql = "SELECT * FROM ticker_items WHERE is_active = 1 ORDER BY created_at DESC LIMIT 10";
@@ -224,16 +229,43 @@ function render_menu_item($item, $level = 0) {
 <body>
 
 <!-- Urgent Alert Modal -->
-<?php if ($active_alert): ?>
+<?php if (!empty($active_alerts) && basename($_SERVER['PHP_SELF']) == 'index.php'): ?>
 <div class="modal fade show" id="urgentAlertModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5); z-index: 2000;">
   <div class="modal-dialog">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> <?php echo htmlspecialchars($active_alert['title']); ?></h5>
+        <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Urgent Alerts</h5>
         <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
       </div>
-      <div class="modal-body p-4 lead">
-        <?php echo nl2br(htmlspecialchars($active_alert['message'])); ?>
+      <div class="modal-body p-0">
+        <div id="urgentAlertCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php foreach($active_alerts as $index => $alert): ?>
+                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> p-4">
+                    <h5 class="fw-bold">
+                        <?php if(!empty($alert['link'])): ?>
+                            <a href="<?php echo htmlspecialchars($alert['link']); ?>" class="text-dark text-decoration-underline"><?php echo htmlspecialchars($alert['title']); ?></a>
+                        <?php else: ?>
+                            <?php echo htmlspecialchars($alert['title']); ?>
+                        <?php endif; ?>
+                    </h5>
+                    <div class="lead">
+                        <?php echo nl2br(htmlspecialchars($alert['message'])); ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php if(count($active_alerts) > 1): ?>
+            <button class="carousel-control-prev" type="button" data-bs-target="#urgentAlertCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#urgentAlertCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <?php endif; ?>
+        </div>
       </div>
     </div>
   </div>
@@ -300,7 +332,14 @@ function render_menu_item($item, $level = 0) {
                 <div class="marquee-content">
                     <?php if ($ticker_result && $ticker_result->num_rows > 0): ?>
                         <?php while($item = $ticker_result->fetch_assoc()): ?>
-                            <span><i class="fas fa-bullhorn" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($item['content']); ?></span>
+                            <span>
+                                <i class="fas fa-bullhorn" style="margin-right: 8px;"></i>
+                                <?php if(!empty($item['link'])): ?>
+                                    <a href="<?php echo htmlspecialchars($item['link']); ?>" class="text-white text-decoration-underline" target="_blank"><?php echo htmlspecialchars($item['content']); ?></a>
+                                <?php else: ?>
+                                    <?php echo htmlspecialchars($item['content']); ?>
+                                <?php endif; ?>
+                            </span>
                         <?php endwhile; ?>
                     <?php else: ?>
                         <span>Welcome to <?php echo htmlspecialchars($site_name); ?>. Admissions are open!</span>
