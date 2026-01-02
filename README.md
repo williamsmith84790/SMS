@@ -39,8 +39,22 @@ This is a complete rebuild of the EduPortal project using **PHP** and **MySQL**,
 - **Results**: Student result search by Roll Number and Session.
 - **Dynamic Pages**: About us, History, etc. (managed via database slugs).
 
-## Admin / Data Entry
+## Admin Panel
 
-To add content (Faculty, Notices, Results, etc.), you will need to insert data into the MySQL database tables using phpMyAdmin or a separate admin tool.
+The project includes a comprehensive Admin Panel to manage all website content.
 
-*Note: The previous Django Admin panel is not available in this PHP version. Database management is handled directly via SQL/phpMyAdmin.*
+- **URL**: `http://localhost/edu_portal/admin/login.php`
+- **Default Username**: `admin`
+- **Default Password**: `password`
+
+### Features
+- **Dashboard**: Quick stats overview.
+- **Sliders & Ticker**: Manage homepage visuals and scrolling news.
+- **Content Management**: Create and edit pages, notices (with Rich Text Editor), and urgent alerts.
+- **Faculty & Alumni**: Manage staff and student profiles.
+- **Gallery**: Create albums and bulk upload photos.
+- **Downloads**: Organize files into categories.
+- **Results**: Upload and manage student exam results.
+
+### Note on File Uploads
+Ensure the `media/` directory and its subdirectories are writable by the web server. The application will attempt to create them if they don't exist.
