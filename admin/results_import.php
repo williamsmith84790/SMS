@@ -15,6 +15,11 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
     $file = $_FILES['csv_file'];
 
+    // Get context from dropdowns
+    $class_context = $conn->real_escape_string($_POST['class']);
+    $part_context = $conn->real_escape_string($_POST['part']);
+    $session_context = $conn->real_escape_string($_POST['session']);
+
     // Check for errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
         $errors[] = "File upload failed with error code: " . $file['error'];
@@ -26,54 +31,126 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
             $handle = fopen($file['tmp_name'], "r");
             if ($handle !== FALSE) {
                 // Get headers
-                $headers = fgetcsv($handle, 1000, ",");
-                // Normalize headers: remove spaces, lowercase
-                $headers = array_map(function($h) { return strtolower(trim($h)); }, $headers);
-
-                // Expected columns
-                $required = ['roll_number', 'session', 'student_name', 'total_marks', 'obtained_marks', 'grade'];
-
-                // Check if required columns exist
-                $missing = array_diff($required, $headers);
-
-                if (!empty($missing)) {
-                    $errors[] = "Missing required columns: " . implode(', ', $missing);
+                $headers_raw = fgetcsv($handle, 2000, ",");
+                if (!$headers_raw) {
+                    $errors[] = "File appears empty or invalid.";
                 } else {
-                    // Map indices
-                    $map = array_flip($headers);
+                    // Normalize headers: remove spaces, lowercase, handle BOM
+                    $headers = array_map(function($h) {
+                        return strtolower(trim(preg_replace('/[\x00-\x1F\x7F\xEF\xBB\xBF]/', '', $h)));
+                    }, $headers_raw);
 
-                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                        // Skip empty rows
-                        if (array_filter($data) == []) continue;
+                    // Standard columns we expect (mapped to database columns)
+                    $standard_cols = [
+                        'roll no' => 'roll_number',
+                        'roll_number' => 'roll_number',
+                        'student name' => 'student_name',
+                        'student_name' => 'student_name',
+                        'father name' => 'father_name',
+                        'father_name' => 'father_name',
+                        'total marks' => 'total_marks',
+                        'total_marks' => 'total_marks',
+                        'obtained marks' => 'obtained_marks',
+                        'obtained_marks' => 'obtained_marks',
+                        'result' => 'result_status',
+                        'result_status' => 'result_status',
+                        'status' => 'result_status',
+                        'institution' => 'institution',
+                        'registration no' => 'registration_number',
+                        'registration_number' => 'registration_number'
+                    ];
 
-                        $roll = isset($map['roll_number']) ? $conn->real_escape_string(trim($data[$map['roll_number']])) : '';
-                        $session = isset($map['session']) ? $conn->real_escape_string(trim($data[$map['session']])) : '';
-                        $name = isset($map['student_name']) ? $conn->real_escape_string(trim($data[$map['student_name']])) : '';
-                        $father = isset($map['father_name']) ? $conn->real_escape_string(trim($data[$map['father_name']])) : '';
-                        $total = isset($map['total_marks']) ? $conn->real_escape_string(trim($data[$map['total_marks']])) : '';
-                        $obtained = isset($map['obtained_marks']) ? $conn->real_escape_string(trim($data[$map['obtained_marks']])) : '';
-                        $grade = isset($map['grade']) ? $conn->real_escape_string(trim($data[$map['grade']])) : '';
+                    // Identify column indices
+                    $col_map = [];
+                    $subject_indices = [];
 
-                        if (empty($roll) || empty($session) || empty($name)) {
-                            $error_count++;
-                            continue;
-                        }
+                    foreach ($headers as $index => $header) {
+                        if (empty($header)) continue;
 
-                        // Check duplicate
-                        $check = $conn->query("SELECT id FROM student_results WHERE roll_number = '$roll' AND session = '$session'");
-                        if ($check->num_rows > 0) {
-                            // Update
-                             $sql = "UPDATE student_results SET student_name='$name', father_name='$father', total_marks='$total', obtained_marks='$obtained', grade='$grade' WHERE roll_number='$roll' AND session='$session'";
+                        if (array_key_exists($header, $standard_cols)) {
+                            $col_map[$standard_cols[$header]] = $index;
                         } else {
-                            // Insert
-                            $sql = "INSERT INTO student_results (roll_number, session, student_name, father_name, total_marks, obtained_marks, grade) VALUES ('$roll', '$session', '$name', '$father', '$total', '$obtained', '$grade')";
+                            // Assume it's a subject
+                            // We treat the header as the subject name
+                            // Filter out common non-subject words if necessary, but simpler is better
+                            if (!in_array($header, ['class', 'part', 'session'])) {
+                                $subject_indices[$headers_raw[$index]] = $index; // Use raw header for display name
+                            }
                         }
+                    }
 
-                        if ($conn->query($sql)) {
-                            $success_count++;
-                        } else {
-                            $error_count++;
-                            $errors[] = "Error for Roll $roll: " . $conn->error;
+                    // Check required
+                    if (!isset($col_map['roll_number']) || !isset($col_map['student_name'])) {
+                        $errors[] = "Missing required columns: Roll No, Student Name.";
+                    } else {
+                        while (($data = fgetcsv($handle, 2000, ",")) !== FALSE) {
+                            // Skip empty rows
+                            if (array_filter($data) == []) continue;
+
+                            $roll = isset($col_map['roll_number']) ? $conn->real_escape_string(trim($data[$col_map['roll_number']])) : '';
+                            $name = isset($col_map['student_name']) ? $conn->real_escape_string(trim($data[$col_map['student_name']])) : '';
+                            $father = isset($col_map['father_name']) ? $conn->real_escape_string(trim($data[$col_map['father_name']])) : '';
+                            $total = isset($col_map['total_marks']) ? $conn->real_escape_string(trim($data[$col_map['total_marks']])) : '';
+                            $obtained = isset($col_map['obtained_marks']) ? $conn->real_escape_string(trim($data[$col_map['obtained_marks']])) : '';
+                            $status = isset($col_map['result_status']) ? $conn->real_escape_string(trim($data[$col_map['result_status']])) : '';
+                            $inst = isset($col_map['institution']) ? $conn->real_escape_string(trim($data[$col_map['institution']])) : '';
+                            $reg = isset($col_map['registration_number']) ? $conn->real_escape_string(trim($data[$col_map['registration_number']])) : '';
+
+                            if (empty($roll) || empty($name)) {
+                                $error_count++;
+                                continue;
+                            }
+
+                            // Build Subject Data JSON
+                            $subjects = [];
+                            foreach ($subject_indices as $sub_name => $idx) {
+                                if (isset($data[$idx]) && trim($data[$idx]) !== '') {
+                                    $subjects[] = [
+                                        'subject' => $sub_name,
+                                        'obtained' => trim($data[$idx]),
+                                        'total' => 100 // Default, or we could add logic to find "Subject Total" cols
+                                    ];
+                                }
+                            }
+                            $result_data_json = $conn->real_escape_string(json_encode($subjects));
+
+                            // Use context from dropdowns
+                            $class = $class_context;
+                            $part = $part_context;
+                            $session = $session_context;
+
+                            // Check duplicate (Roll + Session + Class + Part to be safe, but usually Roll+Session is unique enough per board)
+                            // Prompt says unique constraint on roll+session in existing DB.
+                            $check = $conn->query("SELECT id FROM student_results WHERE roll_number = '$roll' AND session = '$session'");
+
+                            if ($check && $check->num_rows > 0) {
+                                // Update
+                                $sql = "UPDATE student_results SET
+                                        student_name='$name',
+                                        father_name='$father',
+                                        total_marks='$total',
+                                        obtained_marks='$obtained',
+                                        result_status='$status',
+                                        class='$class',
+                                        part='$part',
+                                        institution='$inst',
+                                        registration_number='$reg',
+                                        result_data='$result_data_json'
+                                        WHERE roll_number='$roll' AND session='$session'";
+                            } else {
+                                // Insert
+                                $sql = "INSERT INTO student_results
+                                        (roll_number, session, student_name, father_name, total_marks, obtained_marks, result_status, class, part, institution, registration_number, result_data)
+                                        VALUES
+                                        ('$roll', '$session', '$name', '$father', '$total', '$obtained', '$status', '$class', '$part', '$inst', '$reg', '$result_data_json')";
+                            }
+
+                            if ($conn->query($sql)) {
+                                $success_count++;
+                            } else {
+                                $error_count++;
+                                $errors[] = "Error for Roll $roll: " . $conn->error;
+                            }
                         }
                     }
                 }
@@ -87,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
 ?>
 
 <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-header bg-success text-white">
                 <h5 class="mb-0">Import Results (CSV)</h5>
@@ -111,19 +188,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
                     <div class="alert alert-warning">Skipped <?php echo $error_count; ?> rows (duplicates or empty required fields).</div>
                 <?php endif; ?>
 
-                <p>Upload a CSV file with the following headers (order doesn't matter):</p>
-                <code>roll_number, session, student_name, father_name, total_marks, obtained_marks, grade</code>
-                <br><br>
-                <div class="alert alert-info small">
-                    <strong>Note:</strong> Existing records with the same Roll Number and Session will be updated.
-                </div>
-
                 <form method="POST" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label class="form-label">CSV File</label>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Select Class</label>
+                            <select name="class" class="form-select" required>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Matric">Matric</option>
+                                <option value="BS">BS</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Select Part</label>
+                            <select name="part" class="form-select" required>
+                                <option value="First">Part First</option>
+                                <option value="Second">Part Second</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Select Session</label>
+                            <select name="session" class="form-select" required>
+                                <?php for($y = date('Y'); $y >= 2020; $y--): ?>
+                                    <option value="<?php echo ($y-1).'-'.$y; ?>"><?php echo ($y-1).'-'.$y; ?></option>
+                                <?php endfor; ?>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 border p-3 rounded bg-light">
+                        <label class="form-label fw-bold">CSV File</label>
+                        <p class="text-muted small">
+                            <strong>Standard Columns:</strong> Roll No, Student Name, Father Name, Total Marks, Obtained Marks, Result, Institution, Registration No.<br>
+                            <strong>Subjects:</strong> Any other column will be treated as a subject (Header = Subject Name, Value = Obtained Marks).
+                        </p>
                         <input type="file" name="csv_file" class="form-control" accept=".csv" required>
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Import CSV</button>
+
+                    <button type="submit" class="btn btn-success w-100">Import Results</button>
                     <a href="results_list.php" class="btn btn-secondary w-100 mt-2">Cancel</a>
                 </form>
             </div>
