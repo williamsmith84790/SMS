@@ -207,7 +207,7 @@ function render_menu_item($item, $level = 0) {
         .card-header { background-color: var(--white); border-bottom: 1px solid #eee; padding: 20px; font-family: 'Merriweather', serif; font-weight: 700; color: var(--primary-color); }
 
         main { min-height: 60vh; padding: 0 0 50px 0; }
-        .slider-img { height: 420px; object-fit: cover; }
+        .slider-img { height: 460px; object-fit: cover; }
         .section-title { position: relative; margin-bottom: 40px; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--secondary-color); margin-top: 15px; border-radius: 2px; }
 
