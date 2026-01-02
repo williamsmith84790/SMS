@@ -136,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
 
     <!-- Marks Detail -->
     <div class="text-end mb-1 fw-bold">DETAIL OF MARKS</div>
+    <div class="table-responsive">
     <table class="table result-table">
         <thead>
             <tr class="bg-light">
@@ -173,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
             </tr>
         </tbody>
     </table>
+    </div>
 
     <div class="mt-4">
         <p><strong>Result Status:</strong> <span class="fw-bold text-uppercase"><?php echo htmlspecialchars($result['result_status'] ?? $result['grade']); ?></span></p>

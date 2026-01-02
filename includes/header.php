@@ -116,6 +116,14 @@ function render_menu_item($item, $level = 0) {
             line-height: 1.6;
         }
 
+        /* Wider Container */
+        @media (min-width: 1400px) {
+            .container { max-width: 1440px; }
+        }
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            .container { max-width: 1240px; }
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Merriweather', serif;
             color: var(--primary-color);
@@ -126,8 +134,8 @@ function render_menu_item($item, $level = 0) {
         a:hover { color: var(--secondary-color); }
 
         /* --- Ticker (Notice Bar) --- */
-        /* Updated: Seamless integration */
-        .notice-wrapper { background-color: var(--secondary-color); padding: 0; border: none; }
+        /* Updated: 3px gap below */
+        .notice-wrapper { background-color: var(--secondary-color); padding: 0; border: none; margin-bottom: 3px; }
         .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; margin: 0; border-radius: 0; }
         .notice-label { background: #8a0000; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
         .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 130px; right: 0; top: 0; bottom: 0; }
@@ -199,7 +207,7 @@ function render_menu_item($item, $level = 0) {
         .card-header { background-color: var(--white); border-bottom: 1px solid #eee; padding: 20px; font-family: 'Merriweather', serif; font-weight: 700; color: var(--primary-color); }
 
         main { min-height: 60vh; padding: 0 0 50px 0; }
-        .slider-img { height: 400px; object-fit: cover; }
+        .slider-img { height: 420px; object-fit: cover; }
         .section-title { position: relative; margin-bottom: 40px; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--secondary-color); margin-top: 15px; border-radius: 2px; }
 

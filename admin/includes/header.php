@@ -21,10 +21,17 @@ require_once 'auth_check.php';
         }
         body { font-family: 'Open Sans', sans-serif; background-color: #f4f6f9; }
 
-        .sidebar { min-height: 100vh; background: var(--primary-color); color: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
+        .sidebar { min-height: 100vh; background: var(--primary-color); color: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1); width: 260px; transition: 0.3s; }
         .sidebar .brand { font-family: 'Merriweather', serif; font-size: 1.2rem; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: block; color: #fff; text-decoration: none; }
         .sidebar a.nav-link { color: rgba(255,255,255,.8); text-decoration: none; padding: 12px 20px; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; font-size: 0.9rem; }
         .sidebar a.nav-link:hover, .sidebar a.nav-link.active { background: rgba(255,255,255,0.1); color: #fff; border-left: 4px solid var(--secondary-color); padding-left: 16px; }
+
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; left: -260px; z-index: 1050; height: 100%; }
+            .sidebar.active { left: 0; }
+            .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; }
+            .overlay.active { display: block; }
+        }
         .sidebar i { width: 25px; text-align: center; margin-right: 10px; opacity: 0.8; }
 
         .content { padding: 30px; }
@@ -40,13 +47,19 @@ require_once 'auth_check.php';
 </head>
 <body>
 
+<div class="overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
 <div class="d-flex">
     <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column flex-shrink-0 text-white" style="width: 260px;">
-        <a href="dashboard.php" class="brand">
+    <div class="sidebar d-flex flex-column flex-shrink-0 text-white" id="adminSidebar">
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom border-secondary d-md-none">
+            <span class="brand mb-0 p-0 border-0">Menu</span>
+            <button class="btn btn-sm btn-dark" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+        </div>
+        <a href="dashboard.php" class="brand d-none d-md-block">
             <i class="fas fa-graduation-cap text-danger"></i> <?php echo SITE_NAME; ?> <small style="font-size: 0.7rem; display: block; opacity: 0.6; margin-top: 5px;">ADMIN PANEL</small>
         </a>
-        <ul class="nav nav-pills flex-column mb-auto">
+        <ul class="nav nav-pills flex-column mb-auto mt-3 mt-md-0">
             <li class="nav-item"><a href="dashboard.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
 
             <?php if(has_permission('sliders')): ?>
@@ -114,7 +127,12 @@ require_once 'auth_check.php';
     <div class="flex-grow-1" style="max-height: 100vh; overflow-y: auto;">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 shadow-sm sticky-top">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1" style="font-family: 'Merriweather', serif; font-size: 1.1rem; color: #333;"><?php echo isset($page_title) ? $page_title : 'Dashboard'; ?></span>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-primary me-3 d-md-none" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="navbar-brand mb-0 h1" style="font-family: 'Merriweather', serif; font-size: 1.1rem; color: #333;"><?php echo isset($page_title) ? $page_title : 'Dashboard'; ?></span>
+                </div>
                 <div class="ms-auto dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="text-muted small me-2">Logged in as <strong><?php echo $_SESSION['admin_username'] ?? 'Admin'; ?></strong></span>
@@ -143,3 +161,11 @@ require_once 'auth_check.php';
             <?php endif; ?>
             <!-- Scripts needed for the dropdown -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                function toggleSidebar() {
+                    const sidebar = document.getElementById('adminSidebar');
+                    const overlay = document.getElementById('sidebarOverlay');
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                }
+            </script>
