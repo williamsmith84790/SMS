@@ -250,8 +250,6 @@ function render_menu_item($item, $level = 0) {
                 <a href="tel:<?php echo htmlspecialchars($contact_phone); ?>"><i class="fas fa-phone-alt"></i> <?php echo htmlspecialchars($contact_phone); ?></a>
             </div>
             <div class="social-icons">
-                <a href="admin/login.php"><i class="fas fa-user-shield"></i> Staff Login</a>
-                <span class="divider">|</span>
                 <?php if($social_links['facebook'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['facebook']); ?>" target="_blank"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
                 <?php if($social_links['twitter'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['twitter']); ?>" target="_blank"><i class="fab fa-twitter"></i></a><?php endif; ?>
                 <?php if($social_links['linkedin'] != '#'): ?><a href="<?php echo htmlspecialchars($social_links['linkedin']); ?>" target="_blank"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>

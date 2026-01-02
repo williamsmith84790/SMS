@@ -42,9 +42,6 @@
             <div class="col-lg-3 col-md-6 mb-5">
                 <h3>About Us</h3>
                 <p><?php echo isset($settings['footer_about_text']) ? htmlspecialchars($settings['footer_about_text']) : 'We are dedicated to providing quality education.'; ?></p>
-                <?php if(isset($site_logo) && $site_logo): ?>
-                    <img src="<?php echo htmlspecialchars($site_logo); ?>" alt="Logo" style="max-height: 60px; opacity: 0.9; margin-top: 15px;">
-                <?php endif; ?>
             </div>
 
             <!-- Col 2: Useful Links (Dynamic) -->
