@@ -12,7 +12,7 @@ $notices_result = $conn->query($notices_sql);
 ?>
 
 <!-- Slider Section (Full Width) -->
-<div class="row mb-5">
+<div class="row mb-4">
     <div class="col-12">
         <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">

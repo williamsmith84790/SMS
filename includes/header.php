@@ -127,8 +127,8 @@ function render_menu_item($item, $level = 0) {
 
         /* --- Ticker (Notice Bar) --- */
         /* Updated: Not full width, contained */
-        .notice-wrapper { background-color: var(--white); border-bottom: 1px solid #ddd; }
-        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-radius: 4px; margin-top: 10px; }
+        .notice-wrapper { background-color: var(--white); border-bottom: 1px solid #ddd; padding-bottom: 0; }
+        .notice-bar { background-color: var(--secondary-color); color: white; font-size: 0.9rem; height: 40px; line-height: 40px; overflow: hidden; position: relative; border-radius: 4px; margin-top: 10px; margin-bottom: 10px; }
         .notice-label { background: #8a0000; padding: 0 20px; position: absolute; z-index: 10; height: 100%; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; display: flex; align-items: center; letter-spacing: 1px; }
         .marquee-container { overflow: hidden; white-space: nowrap; position: absolute; left: 130px; right: 0; top: 0; bottom: 0; }
         .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 35s linear infinite; }
@@ -198,7 +198,8 @@ function render_menu_item($item, $level = 0) {
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .card-header { background-color: var(--white); border-bottom: 1px solid #eee; padding: 20px; font-family: 'Merriweather', serif; font-weight: 700; color: var(--primary-color); }
 
-        main { min-height: 60vh; padding: 50px 0; }
+        main { min-height: 60vh; padding: 0 0 50px 0; }
+        .slider-img { height: 400px; object-fit: cover; }
         .section-title { position: relative; margin-bottom: 40px; }
         .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--secondary-color); margin-top: 15px; border-radius: 2px; }
 
