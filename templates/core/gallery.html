@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Gallery & Media</h2>
+
+<!-- Photo Albums -->
+<h3 class="border-bottom pb-2">Photo Albums</h3>
+<div class="row mb-5">
+    {% for album in albums %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if album.cover_image %}
+            <img src="{{ album.cover_image.url }}" class="card-img-top" alt="{{ album.title }}" style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ album.title }}</h5>
+                <p class="card-text">{{ album.description|truncatewords:20 }}</p>
+                <a href="{% url 'gallery_detail' album.pk %}" class="btn btn-outline-primary">View Photos</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Videos -->
+<h3 class="border-bottom pb-2">Success Stories (Videos)</h3>
+<div class="row">
+    {% for video in videos %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ video.title }}</h5>
+                <div class="ratio ratio-16x9">
+                    <iframe src="{{ video.video_url }}" title="{{ video.title }}" allowfullscreen></iframe>
+                </div>
+                <p class="mt-2">{{ video.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

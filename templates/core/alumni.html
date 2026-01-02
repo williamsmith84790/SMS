@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Alumni Wall of Fame</h2>
+<div class="row">
+    {% for person in alumni %}
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 text-center">
+            {% if person.image %}
+            <img src="{{ person.image.url }}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 150px; height: 150px; object-fit: cover;" alt="{{ person.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ person.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Batch: {{ person.batch }}</h6>
+                <p class="card-text">{{ person.achievement }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
