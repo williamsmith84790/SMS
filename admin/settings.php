@@ -2,6 +2,12 @@
 $page_title = "Site Settings";
 require_once 'includes/header.php';
 
+if (!has_permission('settings')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 // Fetch current settings
 $settings = [];
 $result = $conn->query("SELECT * FROM site_settings");

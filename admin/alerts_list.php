@@ -2,6 +2,12 @@
 $page_title = "Manage Urgent Alerts";
 require_once 'includes/header.php';
 
+if (!has_permission('urgent_alerts')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $conn->query("DELETE FROM urgent_alerts WHERE id = $id");

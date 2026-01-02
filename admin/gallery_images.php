@@ -2,6 +2,12 @@
 $page_title = "Manage Photos";
 require_once 'includes/header.php';
 
+if (!has_permission('gallery')) {
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 if (!isset($_GET['album_id'])) {
     header("Location: albums_list.php");
     exit;

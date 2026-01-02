@@ -2,6 +2,13 @@
 require_once '../config.php';
 require_once 'auth_check.php';
 
+if (!has_permission('news_ticker')) {
+    require_once 'includes/header.php';
+    echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
+    require_once 'includes/footer.php';
+    exit;
+}
+
 // Handle Delete (moved before header output)
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];

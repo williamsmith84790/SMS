@@ -48,19 +48,63 @@ require_once 'auth_check.php';
         </a>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item"><a href="dashboard.php" class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+            <?php if(has_permission('sliders')): ?>
             <li><a href="slider_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'slider') !== false ? 'active' : ''; ?>"><i class="fas fa-images"></i> Sliders</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('menus')): ?>
             <li><a href="menus.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'menu') !== false ? 'active' : ''; ?>"><i class="fas fa-bars"></i> Menus</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('news_ticker')): ?>
             <li><a href="ticker_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'ticker') !== false ? 'active' : ''; ?>"><i class="fas fa-scroll"></i> News Ticker</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('events')): ?>
             <li><a href="events_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'events') !== false ? 'active' : ''; ?>"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('urgent_alerts')): ?>
             <li><a href="alerts_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'alerts') !== false ? 'active' : ''; ?>"><i class="fas fa-exclamation-triangle"></i> Urgent Alerts</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('notices')): ?>
             <li><a href="notices_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'notices') !== false ? 'active' : ''; ?>"><i class="fas fa-bullhorn"></i> Notices</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('pages')): ?>
             <li><a href="pages_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'pages') !== false ? 'active' : ''; ?>"><i class="fas fa-file-alt"></i> Pages</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('faculty')): ?>
             <li><a href="faculty_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'faculty') !== false ? 'active' : ''; ?>"><i class="fas fa-chalkboard-teacher"></i> Faculty</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('gallery')): ?>
             <li><a href="albums_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'album') !== false || strpos($_SERVER['PHP_SELF'], 'gallery') !== false ? 'active' : ''; ?>"><i class="fas fa-camera"></i> Gallery</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('alumni')): ?>
             <li><a href="alumni_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'alumni') !== false ? 'active' : ''; ?>"><i class="fas fa-user-graduate"></i> Alumni</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('downloads')): ?>
             <li><a href="downloads_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'downloads') !== false ? 'active' : ''; ?>"><i class="fas fa-download"></i> Downloads</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('results')): ?>
             <li><a href="results_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'results') !== false ? 'active' : ''; ?>"><i class="fas fa-poll"></i> Results</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('settings')): ?>
             <li><a href="settings.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'settings') !== false ? 'active' : ''; ?>"><i class="fas fa-cogs"></i> Settings</a></li>
+            <?php endif; ?>
+
+            <?php if(has_permission('manage_users')): ?>
+            <li><a href="users_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'users') !== false ? 'active' : ''; ?>"><i class="fas fa-users-cog"></i> Users</a></li>
+            <?php endif; ?>
+
             <li class="mt-4"><a href="../index.php" target="_blank" class="nav-link text-warning"><i class="fas fa-external-link-alt"></i> View Site</a></li>
             <li><a href="logout.php" class="nav-link text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
@@ -71,9 +115,16 @@ require_once 'auth_check.php';
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4 shadow-sm sticky-top">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1" style="font-family: 'Merriweather', serif; font-size: 1.1rem; color: #333;"><?php echo isset($page_title) ? $page_title : 'Dashboard'; ?></span>
-                <div class="ms-auto">
-                    <span class="text-muted small me-2">Logged in as <strong><?php echo $_SESSION['admin_username'] ?? 'Admin'; ?></strong></span>
-                    <i class="fas fa-user-circle fa-lg text-secondary"></i>
+                <div class="ms-auto dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="text-muted small me-2">Logged in as <strong><?php echo $_SESSION['admin_username'] ?? 'Admin'; ?></strong></span>
+                        <i class="fas fa-user-circle fa-lg text-secondary"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -90,3 +141,5 @@ require_once 'auth_check.php';
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
+            <!-- Scripts needed for the dropdown -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
