@@ -1,7 +1,8 @@
 <?php
-$page_title = "Manage News Ticker";
-require_once 'includes/header.php';
+require_once '../config.php';
+require_once 'auth_check.php';
 
+// Handle Delete (moved before header output)
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $conn->query("DELETE FROM ticker_items WHERE id = $id");
@@ -9,22 +10,26 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+// Handle POST (moved before header output)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = $conn->real_escape_string($_POST['content']);
     $link = $conn->real_escape_string($_POST['link']);
     $is_active = isset($_POST['is_active']) ? 1 : 0;
-
+    
     if (isset($_POST['id']) && !empty($_POST['id'])) {
         $id = (int)$_POST['id'];
         $sql = "UPDATE ticker_items SET content='$content', link='$link', is_active=$is_active WHERE id=$id";
     } else {
         $sql = "INSERT INTO ticker_items (content, link, is_active) VALUES ('$content', '$link', $is_active)";
     }
-
+    
     $conn->query($sql);
     header("Location: ticker_list.php");
     exit;
 }
+
+$page_title = "Manage News Ticker";
+require_once 'includes/header.php';
 
 $edit_item = null;
 if (isset($_GET['edit'])) {
@@ -67,7 +72,7 @@ $result = $conn->query("SELECT * FROM ticker_items ORDER BY created_at DESC");
             </div>
         </div>
     </div>
-
+    
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
