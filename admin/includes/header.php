@@ -41,6 +41,7 @@ require_once 'auth_check.php';
             <li><a href="alumni_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'alumni') !== false ? 'active' : ''; ?>"><i class="fas fa-user-graduate"></i> Alumni</a></li>
             <li><a href="downloads_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'downloads') !== false ? 'active' : ''; ?>"><i class="fas fa-download"></i> Downloads</a></li>
             <li><a href="results_list.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'results') !== false ? 'active' : ''; ?>"><i class="fas fa-poll"></i> Results</a></li>
+            <li><a href="settings.php" class="nav-link <?php echo strpos($_SERVER['PHP_SELF'], 'settings') !== false ? 'active' : ''; ?>"><i class="fas fa-cogs"></i> Settings</a></li>
             <li class="mt-4"><a href="../index.php" target="_blank" class="nav-link text-warning"><i class="fas fa-external-link-alt"></i> View Site</a></li>
             <li><a href="logout.php" class="nav-link text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
