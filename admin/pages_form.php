@@ -36,7 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($conn->query($sql)) {
             $_SESSION['msg_success'] = "Page saved successfully.";
-            echo "<script>window.location.href='pages_list.php';</script>";
+            if (!$id) {
+                $id = $conn->insert_id;
+            }
+            echo "<script>window.location.href='pages_form.php?id=" . $id . "';</script>";
             exit;
         } else {
             $error = "Error: " . $conn->error;

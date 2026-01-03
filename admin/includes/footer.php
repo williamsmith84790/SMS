@@ -17,10 +17,32 @@
                 ['para', ['ul', 'ol', 'paragraph', 'height']],
                 ['table', ['table']],
                 ['insert', ['link', 'picture', 'video', 'hr']],
-                ['layout', ['twoColumns', 'threeColumns', 'fourColumns', 'alertBox']],
+                ['layout', ['twoColumns', 'threeColumns', 'fourColumns', 'imageLeft', 'imageRight', 'alertBox']],
                 ['view', ['fullscreen', 'codeview', 'help']]
             ],
             buttons: {
+                imageLeft: function(context) {
+                    var ui = $.summernote.ui;
+                    var button = ui.button({
+                        contents: '<span class="fa fa-align-left"></span> Img Left',
+                        tooltip: 'Insert Image Left Layout',
+                        click: function() {
+                            context.invoke('editor.pasteHTML', '<div class="row mb-4 align-items-center"><div class="col-md-4"><img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm"></div><div class="col-md-8"><h3>Heading</h3><p>Enter text here...</p></div></div><p><br></p>');
+                        }
+                    });
+                    return button.render();
+                },
+                imageRight: function(context) {
+                    var ui = $.summernote.ui;
+                    var button = ui.button({
+                        contents: '<span class="fa fa-align-right"></span> Img Right',
+                        tooltip: 'Insert Image Right Layout',
+                        click: function() {
+                            context.invoke('editor.pasteHTML', '<div class="row mb-4 align-items-center"><div class="col-md-8"><h3>Heading</h3><p>Enter text here...</p></div><div class="col-md-4"><img src="https://via.placeholder.com/400x300" class="img-fluid rounded shadow-sm"></div></div><p><br></p>');
+                        }
+                    });
+                    return button.render();
+                },
                 twoColumns: function(context) {
                     var ui = $.summernote.ui;
                     var button = ui.button({
