@@ -170,26 +170,28 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
     <div class="row">
         <?php while($event = $events_result->fetch_assoc()): ?>
         <div class="col-md-3 col-sm-6 mb-4">
-            <div class="card event-card h-100">
-                <div class="position-relative">
-                    <?php if($event['image']): ?>
-                        <img src="<?php echo htmlspecialchars($event['image']); ?>" class="card-img-top" style="height: 180px; object-fit: cover;">
-                    <?php else: ?>
-                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
-                            <i class="fas fa-calendar-alt fa-3x text-muted"></i>
+            <a href="event_detail.php?id=<?php echo $event['id']; ?>" class="text-decoration-none text-dark">
+                <div class="card event-card h-100">
+                    <div class="position-relative">
+                        <?php if($event['image']): ?>
+                            <img src="<?php echo htmlspecialchars($event['image']); ?>" class="card-img-top" style="height: 180px; object-fit: cover;">
+                        <?php else: ?>
+                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                <i class="fas fa-calendar-alt fa-3x text-muted"></i>
+                            </div>
+                        <?php endif; ?>
+                        <div class="event-date-box">
+                            <span class="day"><?php echo date('d', strtotime($event['date'])); ?></span>
+                            <span class="month"><?php echo date('M', strtotime($event['date'])); ?></span>
                         </div>
-                    <?php endif; ?>
-                    <div class="event-date-box">
-                        <span class="day"><?php echo date('d', strtotime($event['date'])); ?></span>
-                        <span class="month"><?php echo date('M', strtotime($event['date'])); ?></span>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold text-primary mb-2"><?php echo htmlspecialchars($event['title']); ?></h6>
+                        <p class="card-text small text-muted mb-2"><i class="far fa-clock"></i> <?php echo htmlspecialchars($event['time'] ?? 'All Day'); ?></p>
+                        <p class="card-text small"><?php echo substr(strip_tags($event['description']), 0, 60) . '...'; ?></p>
                     </div>
                 </div>
-                <div class="card-body">
-                    <h6 class="card-title fw-bold text-primary mb-2"><?php echo htmlspecialchars($event['title']); ?></h6>
-                    <p class="card-text small text-muted mb-2"><i class="far fa-clock"></i> <?php echo htmlspecialchars($event['time'] ?? 'All Day'); ?></p>
-                    <p class="card-text small"><?php echo substr(strip_tags($event['description']), 0, 60) . '...'; ?></p>
-                </div>
-            </div>
+            </a>
         </div>
         <?php endwhile; ?>
     </div>
