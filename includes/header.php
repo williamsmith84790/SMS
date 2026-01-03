@@ -230,8 +230,8 @@ function render_menu_item($item, $level = 0) {
 
 <!-- Urgent Alert Modal -->
 <?php if (!empty($active_alerts) && basename($_SERVER['PHP_SELF']) == 'index.php'): ?>
-<div class="modal fade show" id="urgentAlertModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5); z-index: 2000;">
-  <div class="modal-dialog">
+<div class="modal fade show" id="urgentAlertModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5); z-index: 2000;" onclick="document.getElementById('urgentAlertModal').style.display='none'">
+  <div class="modal-dialog" onclick="event.stopPropagation()">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-danger text-white">
         <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Urgent Alert</h5>
