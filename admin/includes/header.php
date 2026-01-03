@@ -47,6 +47,11 @@ require_once 'auth_check.php';
         /* Fix for Summernote Fullscreen */
         .note-editor.note-frame.fullscreen { z-index: 9999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; }
         .note-editor.note-frame .note-editing-area .note-editable { background-color: #fff !important; }
+
+        /* Ensure Modals and Dropdowns appear above everything */
+        .note-modal-backdrop { z-index: 10000 !important; }
+        .note-modal { z-index: 10001 !important; }
+        .note-dropzone { z-index: 10002 !important; }
     </style>
 </head>
 <body>
