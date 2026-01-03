@@ -232,19 +232,6 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
     </div>
 </div>
 
-            <div class="col-md-3 col-sm-6 col-6">
-                <div class="stat-card">
-                    <i class="<?php echo htmlspecialchars($stat['icon']); ?>"></i>
-                    <span class="count"><?php echo htmlspecialchars($stat['number']); ?></span>
-                    <span class="label"><?php echo htmlspecialchars($stat['label']); ?></span>
-                </div>
-            </div>
-            <?php endwhile; ?>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
-
 <!-- Photo Gallery Section -->
 <?php if($gallery_result && $gallery_result->num_rows > 0): ?>
 <div class="mb-5 mt-5">
