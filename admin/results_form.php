@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $conn->real_escape_string($_POST['session']);
     $student_name = $conn->real_escape_string($_POST['student_name']);
     $father_name = $conn->real_escape_string($_POST['father_name']);
+    $institution = $conn->real_escape_string($_POST['institution']);
     $total_marks = $conn->real_escape_string($_POST['total_marks']);
     $obtained_marks = $conn->real_escape_string($_POST['obtained_marks']);
     $grade = $conn->real_escape_string($_POST['grade']);
@@ -43,9 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($id) {
-        $sql = "UPDATE student_results SET roll_number='$roll_number', session='$session', student_name='$student_name', father_name='$father_name', total_marks='$total_marks', obtained_marks='$obtained_marks', grade='$grade', result_data='$result_data', result_file='$file_path' WHERE id=$id";
+        $sql = "UPDATE student_results SET roll_number='$roll_number', session='$session', student_name='$student_name', father_name='$father_name', institution='$institution', total_marks='$total_marks', obtained_marks='$obtained_marks', grade='$grade', result_data='$result_data', result_file='$file_path' WHERE id=$id";
     } else {
-        $sql = "INSERT INTO student_results (roll_number, session, student_name, father_name, total_marks, obtained_marks, grade, result_data, result_file) VALUES ('$roll_number', '$session', '$student_name', '$father_name', '$total_marks', '$obtained_marks', '$grade', '$result_data', '$file_path')";
+        $sql = "INSERT INTO student_results (roll_number, session, student_name, father_name, institution, total_marks, obtained_marks, grade, result_data, result_file) VALUES ('$roll_number', '$session', '$student_name', '$father_name', '$institution', '$total_marks', '$obtained_marks', '$grade', '$result_data', '$file_path')";
     }
 
     if ($conn->query($sql)) {
@@ -87,6 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="mb-3">
                         <label class="form-label">Father's Name</label>
                         <input type="text" name="father_name" class="form-control" value="<?php echo $student_result ? htmlspecialchars($student_result['father_name']) : ''; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Institute</label>
+                        <input type="text" name="institution" class="form-control" value="<?php echo $student_result ? htmlspecialchars($student_result['institution']) : ''; ?>">
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">

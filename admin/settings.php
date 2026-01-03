@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'social_facebook', 'social_twitter', 'social_instagram', 'social_linkedin',
         'footer_about_text', 'header_apply_link', 'footer_copyright_text',
         'feature_1_title', 'feature_1_text', 'feature_1_link',
-        'feature_2_title', 'feature_2_text', 'feature_2_link'
+        'feature_2_title', 'feature_2_text', 'feature_2_link',
+        'result_card_board_name', 'result_card_title', 'result_card_exam_title'
     ];
 
     // File Upload Logic Helper
@@ -100,6 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" id="homefeatures-tab" data-bs-toggle="tab" data-bs-target="#homefeatures" type="button">Home Feature Cards</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button">Result Card</button>
                         </li>
                     </ul>
 
@@ -233,6 +237,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                 <?php endif; ?>
                                 <input type="file" name="feature_2_image" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Result Card Tab -->
+                        <div class="tab-pane fade" id="results">
+                            <h6 class="mb-3">Result Card Header Configuration</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Board/Institution Name</label>
+                                <input type="text" name="result_card_board_name" class="form-control" value="<?php echo isset($settings['result_card_board_name']) ? htmlspecialchars($settings['result_card_board_name']) : 'BOARD OF INTERMEDIATE & SECONDARY EDUCATION'; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Result Heading</label>
+                                <input type="text" name="result_card_title" class="form-control" value="<?php echo isset($settings['result_card_title']) ? htmlspecialchars($settings['result_card_title']) : 'RESULT INFORMATION'; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Exam Title Format</label>
+                                <input type="text" name="result_card_exam_title" class="form-control" value="<?php echo isset($settings['result_card_exam_title']) ? htmlspecialchars($settings['result_card_exam_title']) : 'HIGHER SECONDARY SCHOOL CERTIFICATE (ANNUAL), EXAMINATION'; ?>">
+                                <small class="text-muted">This text appears below the heading. The dynamic Class/Session will be prefixed if using the default code, or you can customize the layout in source.</small>
                             </div>
                         </div>
                     </div>

@@ -37,6 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
     .result-header { text-align: center; margin-bottom: 20px; }
     .result-header img { max-height: 80px; }
     .student-info td { border: none !important; text-align: left; padding: 5px 10px; }
+    @media print {
+        #result-card {
+            transform: scale(0.9);
+            transform-origin: top center;
+            max-height: 148mm;
+            overflow: hidden;
+        }
+        .container { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+        @page { margin: 10mm; size: A4; }
+    }
 </style>
 
 <div class="row justify-content-center no-print mt-5">
@@ -100,9 +110,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
 <div class="container bg-white p-5 shadow" id="result-card">
     <!-- Header -->
     <div class="result-header">
-        <h4>BOARD OF INTERMEDIATE & SECONDARY EDUCATION</h4>
-        <h5>RESULT INFORMATION</h5>
-        <h6 class="text-uppercase fw-bold"><?php echo htmlspecialchars($result['class'] ?? 'HIGHER SECONDARY SCHOOL'); ?> CERTIFICATE (<?php echo htmlspecialchars($result['part'] ?? 'ANNUAL'); ?>), EXAMINATION</h6>
+        <h4><?php echo htmlspecialchars($settings['result_card_board_name'] ?? 'BOARD OF INTERMEDIATE & SECONDARY EDUCATION'); ?></h4>
+        <h5><?php echo htmlspecialchars($settings['result_card_title'] ?? 'RESULT INFORMATION'); ?></h5>
+        <h6 class="text-uppercase fw-bold"><?php echo htmlspecialchars($settings['result_card_exam_title'] ?? ($result['class'] ?? 'HIGHER SECONDARY SCHOOL') . ' CERTIFICATE (' . ($result['part'] ?? 'ANNUAL') . '), EXAMINATION'); ?></h6>
         <p class="small text-muted">(Errors & Omissions Excepted)</p>
     </div>
 
@@ -111,12 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
         <tr>
             <td width="20%" class="fw-bold">Roll No.</td>
             <td width="30%"><?php echo htmlspecialchars($result['roll_number']); ?></td>
-            <td width="20%" class="fw-bold">Group:</td>
-            <td width="30%">General Science</td> <!-- Placeholder, or add Group column -->
+            <td width="50%" colspan="2"></td>
         </tr>
         <tr>
             <td class="fw-bold">Candidate's Name:</td>
-            <td><?php echo htmlspecialchars($result['student_name']); ?></td>
+            <td colspan="3"><?php echo htmlspecialchars($result['student_name']); ?></td>
         </tr>
         <tr>
             <td class="fw-bold">Father's Name:</td>
