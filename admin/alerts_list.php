@@ -20,7 +20,7 @@ if (isset($_GET['delete'])) {
 
 // Handle POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $conn->real_escape_string($_POST['title']);
+    $title = "Urgent Alert"; // Default title as it's no longer user-editable
     $message = $conn->real_escape_string($_POST['message']);
     $is_active = isset($_POST['is_active']) ? 1 : 0;
 
@@ -68,10 +68,6 @@ $result = $conn->query("SELECT * FROM urgent_alerts ORDER BY created_at DESC");
                         <input type="hidden" name="id" value="<?php echo $edit_item['id']; ?>">
                     <?php endif; ?>
                     <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input type="text" name="title" class="form-control" required value="<?php echo $edit_item ? htmlspecialchars($edit_item['title']) : ''; ?>">
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label">Message</label>
                         <textarea name="message" class="form-control" rows="4" required><?php echo $edit_item ? htmlspecialchars($edit_item['message']) : ''; ?></textarea>
                     </div>
@@ -101,7 +97,7 @@ $result = $conn->query("SELECT * FROM urgent_alerts ORDER BY created_at DESC");
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Title</th>
+                            <th>Message</th>
                             <th>Date</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -110,7 +106,7 @@ $result = $conn->query("SELECT * FROM urgent_alerts ORDER BY created_at DESC");
                     <tbody>
                         <?php while($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['title']); ?></td>
+                            <td><?php echo htmlspecialchars(substr($row['message'], 0, 50)) . '...'; ?></td>
                             <td><?php echo date('d M Y', strtotime($row['created_at'])); ?></td>
                             <td>
                                 <span class="badge <?php echo $row['is_active'] ? 'bg-danger' : 'bg-secondary'; ?>">

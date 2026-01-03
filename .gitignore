@@ -7,5 +7,3 @@ db.sqlite3
 .DS_Store
 staticfiles/
 my_mysql_data/
-my_mysql_data/
-my_mysql_data/

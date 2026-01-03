@@ -234,23 +234,20 @@ function render_menu_item($item, $level = 0) {
   <div class="modal-dialog">
     <div class="modal-content border-0 shadow-lg">
       <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Urgent Alerts</h5>
+        <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Urgent Alert</h5>
         <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
       </div>
       <div class="modal-body p-0">
         <div id="urgentAlertCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <?php foreach($active_alerts as $index => $alert): ?>
-                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> p-4">
-                    <h5 class="fw-bold">
+                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> p-4 text-center">
+                    <div class="lead fw-bold">
                         <?php if(!empty($alert['link'])): ?>
-                            <a href="<?php echo htmlspecialchars($alert['link']); ?>" class="text-dark text-decoration-underline"><?php echo htmlspecialchars($alert['title']); ?></a>
+                            <a href="<?php echo htmlspecialchars($alert['link']); ?>" class="text-dark text-decoration-underline"><?php echo nl2br(htmlspecialchars($alert['message'])); ?></a>
                         <?php else: ?>
-                            <?php echo htmlspecialchars($alert['title']); ?>
+                            <?php echo nl2br(htmlspecialchars($alert['message'])); ?>
                         <?php endif; ?>
-                    </h5>
-                    <div class="lead">
-                        <?php echo nl2br(htmlspecialchars($alert['message'])); ?>
                     </div>
                 </div>
                 <?php endforeach; ?>
