@@ -38,26 +38,22 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
     /* Stats Section */
     .stat-card {
         text-align: center;
-        padding: 40px;
+        padding: 40px 20px;
         background: #fff;
-        border: 1px solid #eee;
+        border: 0;
         transition: 0.3s;
         height: 100%;
-        aspect-ratio: 1/1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: 15px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
     .stat-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        border-color: var(--secondary-color);
+        border-bottom: 3px solid var(--secondary-color);
     }
-    .stat-card i { font-size: 5rem; color: #777; margin-bottom: 20px; display: block; }
-    .stat-card .count { font-size: 4rem; font-weight: 700; color: #000; margin-bottom: 10px; display: block; line-height: 1; }
-    .stat-card .label { color: #666; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .stat-card i { font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; display: block; opacity: 0.9; }
+    .stat-card .count { font-size: 3rem; font-weight: 800; color: #333; margin-bottom: 10px; display: block; line-height: 1; }
+    .stat-card .label { color: #777; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
 
     /* Events Section */
     .event-card { border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; overflow: hidden; }
