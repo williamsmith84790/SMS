@@ -240,8 +240,8 @@ function render_menu_item($item, $level = 0) {
       <div class="modal-body p-4">
         <div class="list-group list-group-flush">
             <?php foreach($active_alerts as $index => $alert): ?>
-            <div class="list-group-item border-0 text-center <?php echo $index > 0 ? 'border-top' : ''; ?> py-3">
-                <div class="lead fw-bold">
+            <div class="list-group-item border-0 text-start <?php echo $index > 0 ? 'border-top' : ''; ?> py-3">
+                <div class="small">
                     <?php if(!empty($alert['link'])): ?>
                         <a href="<?php echo htmlspecialchars($alert['link']); ?>" class="text-dark text-decoration-underline"><?php echo nl2br(htmlspecialchars($alert['message'])); ?></a>
                     <?php else: ?>
