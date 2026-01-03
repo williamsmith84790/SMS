@@ -3,9 +3,8 @@ require_once 'config.php';
 
 // Add default result card settings if they don't exist
 $defaults = [
-    'result_card_board_name' => 'BOARD OF INTERMEDIATE & SECONDARY EDUCATION',
-    'result_card_title' => 'RESULT INFORMATION',
-    'result_card_exam_title' => 'HIGHER SECONDARY SCHOOL CERTIFICATE (ANNUAL), EXAMINATION'
+    'contact_timing' => 'Monday - Saturday: 09:00 - 02:00',
+    'contact_map_iframe' => 'https://maps.google.com/maps?q=Govt.%20Islamia%20Graduate%20College%20%28W%29%2C%20Cooper%20Road%2C%20Lahore&t=m&z=14&output=embed&iwloc=near'
 ];
 
 echo "Updating site settings...<br>";

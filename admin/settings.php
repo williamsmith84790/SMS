@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'footer_about_text', 'header_apply_link', 'footer_copyright_text',
         'feature_1_title', 'feature_1_text', 'feature_1_link',
         'feature_2_title', 'feature_2_text', 'feature_2_link',
-        'result_card_board_name', 'result_card_title', 'result_card_exam_title'
+        'result_card_board_name', 'result_card_title', 'result_card_exam_title',
+        'contact_timing', 'contact_map_iframe'
     ];
 
     // File Upload Logic Helper
@@ -104,6 +105,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button">Result Card</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button">Contact Page</button>
                         </li>
                     </ul>
 
@@ -255,6 +259,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label class="form-label">Exam Title Format</label>
                                 <input type="text" name="result_card_exam_title" class="form-control" value="<?php echo isset($settings['result_card_exam_title']) ? htmlspecialchars($settings['result_card_exam_title']) : 'HIGHER SECONDARY SCHOOL CERTIFICATE (ANNUAL), EXAMINATION'; ?>">
                                 <small class="text-muted">This text appears below the heading. The dynamic Class/Session will be prefixed if using the default code, or you can customize the layout in source.</small>
+                            </div>
+                        </div>
+
+                        <!-- Contact Page Tab -->
+                        <div class="tab-pane fade" id="contact">
+                            <h6 class="mb-3">Contact Information</h6>
+                            <div class="mb-3">
+                                <label class="form-label">College Timing</label>
+                                <input type="text" name="contact_timing" class="form-control" value="<?php echo isset($settings['contact_timing']) ? htmlspecialchars($settings['contact_timing']) : 'Monday - Saturday: 09:00 - 02:00'; ?>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Google Maps Iframe URL (src attribute only)</label>
+                                <input type="text" name="contact_map_iframe" class="form-control" value="<?php echo isset($settings['contact_map_iframe']) ? htmlspecialchars($settings['contact_map_iframe']) : 'https://maps.google.com/maps?q=Govt.%20Islamia%20Graduate%20College%20%28W%29%2C%20Cooper%20Road%2C%20Lahore&t=m&z=14&output=embed&iwloc=near'; ?>">
+                                <small class="text-muted">Enter the URL from the 'src' attribute of the Google Maps embed code.</small>
                             </div>
                         </div>
                     </div>
