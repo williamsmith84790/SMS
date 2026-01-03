@@ -18,6 +18,10 @@ $stats_result = $conn->query($stats_sql);
 $events_sql = "SELECT * FROM events ORDER BY date DESC LIMIT 4";
 $events_result = $conn->query($events_sql);
 
+// Fetch Gallery Albums
+$gallery_sql = "SELECT * FROM gallery_albums ORDER BY created_at DESC LIMIT 4";
+$gallery_result = $conn->query($gallery_sql);
+
 // Feature Card Data
 $f1_title = isset($settings['feature_1_title']) ? $settings['feature_1_title'] : 'Intermediate Program';
 $f1_text = isset($settings['feature_1_text']) ? $settings['feature_1_text'] : 'Comprehensive F.Sc, F.A, and I.Com programs designed to build a strong academic foundation.';
@@ -248,6 +252,28 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
             </div>
             <?php endwhile; ?>
         </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- Photo Gallery Section -->
+<?php if($gallery_result && $gallery_result->num_rows > 0): ?>
+<div class="mb-5 mt-5">
+    <div class="section-title">
+        <h3 class="mb-0">Photo Gallery</h3>
+    </div>
+    <div class="row g-4">
+        <?php while($album = $gallery_result->fetch_assoc()): ?>
+        <div class="col-md-3 col-sm-6">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="<?php echo htmlspecialchars($album['cover_image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($album['title']); ?>" style="height: 200px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title h6 fw-bold"><?php echo htmlspecialchars($album['title']); ?></h5>
+                    <a href="gallery_detail.php?id=<?php echo $album['id']; ?>" class="btn btn-sm btn-outline-primary stretched-link">View Album</a>
+                </div>
+            </div>
+        </div>
+        <?php endwhile; ?>
     </div>
 </div>
 <?php endif; ?>
