@@ -39,13 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
     .student-info td { border: none !important; text-align: left; padding: 5px 10px; }
     @media print {
         #result-card {
-            transform: scale(0.9);
-            transform-origin: top center;
-            max-height: 148mm;
-            overflow: hidden;
+            /* Removed fixed height and overflow hidden to prevent data loss */
+            width: 100% !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
-        .container { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
-        @page { margin: 10mm; size: A4; }
+        body * { visibility: hidden; }
+        #result-card, #result-card * { visibility: visible; }
+        #result-card { position: absolute; left: 0; top: 0; }
+        .container { max-width: 100% !important; }
+        @page { size: A4; margin: 10mm; }
     }
 </style>
 
