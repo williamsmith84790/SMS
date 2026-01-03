@@ -44,6 +44,15 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
     .event-date-box { position: absolute; top: 15px; left: 15px; background: var(--secondary-color); color: #fff; padding: 5px 10px; text-align: center; border-radius: 4px; }
     .event-date-box .day { display: block; font-size: 1.2rem; font-weight: 700; line-height: 1; }
     .event-date-box .month { font-size: 0.75rem; text-transform: uppercase; }
+
+    /* Vertical Marquee for Notices */
+    .marquee-vertical { height: 300px; overflow: hidden; position: relative; }
+    .marquee-vertical .list-group { position: absolute; width: 100%; animation: marquee-up 15s linear infinite; }
+    .marquee-vertical:hover .list-group { animation-play-state: paused; }
+    @keyframes marquee-up {
+        0% { top: 100%; }
+        100% { top: -100%; }
+    }
 </style>
 
 <!-- Slider Section (Full Width) -->
@@ -117,37 +126,36 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Notice Board</h5>
             </div>
-            <div class="list-group list-group-flush">
-                <?php
-                if ($notices_result && $notices_result->num_rows > 0) {
-                    while($notice = $notices_result->fetch_assoc()) {
-                        ?>
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1 text-primary">
-                                    <?php if($notice['is_pinned']): ?><i class="fas fa-thumbtack text-danger"></i><?php endif; ?>
-                                    <?php if(!empty($notice['link'])): ?>
-                                        <a href="<?php echo htmlspecialchars($notice['link']); ?>" target="_blank" class="text-decoration-none"><?php echo htmlspecialchars($notice['title']); ?></a>
-                                    <?php else: ?>
-                                        <?php echo htmlspecialchars($notice['title']); ?>
-                                    <?php endif; ?>
-                                </h6>
-                                <small class="text-muted"><?php echo date('M d', strtotime($notice['date_posted'])); ?></small>
+            <div class="marquee-vertical">
+                <div class="list-group list-group-flush">
+                    <?php
+                    if ($notices_result && $notices_result->num_rows > 0) {
+                        while($notice = $notices_result->fetch_assoc()) {
+                            ?>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 text-primary">
+                                        <?php if($notice['is_pinned']): ?><i class="fas fa-thumbtack text-danger"></i><?php endif; ?>
+                                        <?php if(!empty($notice['link'])): ?>
+                                            <a href="<?php echo htmlspecialchars($notice['link']); ?>" target="_blank" class="text-decoration-none"><?php echo htmlspecialchars($notice['title']); ?></a>
+                                        <?php else: ?>
+                                            <?php echo htmlspecialchars($notice['title']); ?>
+                                        <?php endif; ?>
+                                    </h6>
+                                    <small class="text-muted"><?php echo date('M d', strtotime($notice['date_posted'])); ?></small>
+                                </div>
+                                <p class="mb-1 small text-truncate"><?php echo strip_tags($notice['content']); ?></p>
+                                <?php if($notice['file']): ?>
+                                    <a href="<?php echo htmlspecialchars($notice['file']); ?>" class="badge bg-secondary text-decoration-none" target="_blank">Download File</a>
+                                <?php endif; ?>
                             </div>
-                            <p class="mb-1 small text-truncate"><?php echo strip_tags($notice['content']); ?></p>
-                            <?php if($notice['file']): ?>
-                                <a href="<?php echo htmlspecialchars($notice['file']); ?>" class="badge bg-secondary text-decoration-none" target="_blank">Download File</a>
-                            <?php endif; ?>
-                        </div>
-                        <?php
+                            <?php
+                        }
+                    } else {
+                        echo '<div class="list-group-item">No recent notices.</div>';
                     }
-                } else {
-                    echo '<div class="list-group-item">No recent notices.</div>';
-                }
-                ?>
-            </div>
-            <div class="card-footer text-center">
-                <a href="#" class="btn btn-sm btn-outline-primary">View All Notices</a>
+                    ?>
+                </div>
             </div>
         </div>
     </div>
