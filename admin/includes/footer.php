@@ -9,16 +9,18 @@
 <script>
     $(document).ready(function() {
         $('.summernote').summernote({
-            height: 300,
+            height: 400,
             toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
+                ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript', 'fontname', 'fontsize']],
                 ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
+                ['para', ['ul', 'ol', 'paragraph', 'height']],
                 ['table', ['table']],
-                ['insert', ['link']], // 'picture' can be added but needs server handler
+                ['insert', ['link', 'picture', 'video', 'hr']],
                 ['view', ['fullscreen', 'codeview', 'help']]
-            ]
+            ],
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Merriweather', 'Open Sans', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '32', '36', '48', '64', '82', '150']
         });
     });
 </script>
