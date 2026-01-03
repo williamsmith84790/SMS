@@ -1,20 +1,26 @@
 <?php
-$page_title = "Manage Stats";
-require_once 'includes/header.php';
+require_once '../config.php';
+require_once 'auth_check.php';
 
+// Check permissions early
 if (!has_permission('settings')) {
+    $page_title = "Manage Stats";
+    require_once 'includes/header.php';
     echo '<div class="alert alert-danger">You do not have permission to access this page.</div>';
     require_once 'includes/footer.php';
     exit;
 }
 
-// Handle Delete
+// Handle Delete before header
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $conn->query("DELETE FROM site_stats WHERE id = $id");
     header("Location: stats_list.php");
     exit;
 }
+
+$page_title = "Manage Stats";
+require_once 'includes/header.php';
 
 $result = $conn->query("SELECT * FROM site_stats ORDER BY sort_order ASC");
 ?>
