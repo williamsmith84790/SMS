@@ -43,6 +43,10 @@ require_once 'auth_check.php';
         .btn-primary:hover { background-color: #00152e; border-color: #00152e; }
 
         .table thead th { background-color: #f8f9fa; border-bottom: 2px solid #eee; color: #555; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; }
+
+        /* Fix for Summernote Fullscreen */
+        .note-editor.note-frame.fullscreen { z-index: 9999 !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; }
+        .note-editor.note-frame .note-editing-area .note-editable { background-color: #fff !important; }
     </style>
 </head>
 <body>
