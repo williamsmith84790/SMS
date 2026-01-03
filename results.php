@@ -119,27 +119,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
     <!-- Student Info -->
     <table class="table table-borderless student-info mb-4">
         <tr>
-            <td width="20%" class="fw-bold">Roll No.</td>
-            <td width="30%"><?php echo htmlspecialchars($result['roll_number']); ?></td>
-            <td width="50%" colspan="2"></td>
-        </tr>
-        <tr>
-            <td class="fw-bold">Candidate's Name:</td>
-            <td colspan="3"><?php echo htmlspecialchars($result['student_name']); ?></td>
-        </tr>
-        <tr>
-            <td class="fw-bold">Father's Name:</td>
-            <td><?php echo htmlspecialchars($result['father_name']); ?></td>
-        </tr>
-        <tr>
-            <td class="fw-bold">Institute:</td>
-            <td colspan="3"><?php echo htmlspecialchars($result['institution'] ?? '-'); ?></td>
-        </tr>
-        <tr>
-            <td class="fw-bold">Registration No.</td>
-            <td><?php echo htmlspecialchars($result['registration_number'] ?? '-'); ?></td>
-            <td class="fw-bold">Session:</td>
-            <td><?php echo htmlspecialchars($result['session']); ?></td>
+            <!-- Left Column -->
+            <td width="50%" style="vertical-align: top; padding: 0;">
+                <table class="table table-borderless m-0">
+                    <tr>
+                        <td width="40%" class="fw-bold py-1">Roll No.</td>
+                        <td width="60%" class="py-1"><?php echo htmlspecialchars($result['roll_number']); ?></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold py-1">Name:</td>
+                        <td class="py-1"><?php echo htmlspecialchars($result['student_name']); ?></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold py-1">Father's Name:</td>
+                        <td class="py-1"><?php echo htmlspecialchars($result['father_name']); ?></td>
+                    </tr>
+                </table>
+            </td>
+            <!-- Right Column -->
+            <td width="50%" style="vertical-align: top; padding: 0;">
+                <table class="table table-borderless m-0">
+                    <tr>
+                        <td width="40%" class="fw-bold py-1">Institute:</td>
+                        <td width="60%" class="py-1"><?php echo htmlspecialchars($result['institution'] ?? '-'); ?></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold py-1">Registration No.</td>
+                        <td class="py-1"><?php echo htmlspecialchars($result['registration_number'] ?? '-'); ?></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold py-1">Session:</td>
+                        <td class="py-1"><?php echo htmlspecialchars($result['session']); ?></td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
 
