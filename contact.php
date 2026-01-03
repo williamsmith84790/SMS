@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<div class="row">
+<div class="row mt-5">
     <div class="col-md-6 mb-4">
         <h2 class="mb-3">Get in Touch</h2>
         <p class="text-muted">We are here to answer any questions you may have about our programs and campus life.</p>

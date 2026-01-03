@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['roll_number'])) {
     .student-info td { border: none !important; text-align: left; padding: 5px 10px; }
 </style>
 
-<div class="row justify-content-center no-print">
+<div class="row justify-content-center no-print mt-5">
     <div class="col-md-10">
         <div class="card shadow mb-4">
             <div class="card-header bg-primary text-white">

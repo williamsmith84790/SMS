@@ -25,7 +25,7 @@ $page_title = $page['title'];
 require_once 'includes/header.php';
 ?>
 
-<h2 class="mb-4 border-bottom pb-2"><?php echo htmlspecialchars($page['title']); ?></h2>
+<h2 class="mt-5 mb-4 border-bottom pb-2"><?php echo htmlspecialchars($page['title']); ?></h2>
 
 <div class="content">
     <?php echo $page['content']; // Assumed safe HTML ?>

@@ -7,7 +7,7 @@ $sql = "SELECT * FROM events ORDER BY date DESC";
 $result = $conn->query($sql);
 ?>
 
-<div class="text-center mb-5">
+<div class="text-center mt-5 mb-5">
     <h1 class="fw-bold">Upcoming Events</h1>
     <p class="text-muted">Join us for our upcoming activities and ceremonies.</p>
 </div>

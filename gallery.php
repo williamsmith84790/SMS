@@ -11,7 +11,7 @@ $video_sql = "SELECT * FROM videos ORDER BY id DESC";
 $video_result = $conn->query($video_sql);
 ?>
 
-<h2 class="mb-4 border-bottom pb-2">Photo Gallery</h2>
+<h2 class="mt-5 mb-4 border-bottom pb-2">Photo Gallery</h2>
 
 <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
     <?php

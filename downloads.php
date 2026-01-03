@@ -7,7 +7,7 @@ $cat_sql = "SELECT * FROM document_categories ORDER BY name ASC";
 $cat_result = $conn->query($cat_sql);
 ?>
 
-<h2 class="mb-4 border-bottom pb-2">Download Center</h2>
+<h2 class="mt-5 mb-4 border-bottom pb-2">Download Center</h2>
 
 <div class="accordion" id="downloadsAccordion">
     <?php

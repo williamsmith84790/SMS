@@ -6,7 +6,7 @@ $alumni_sql = "SELECT * FROM alumni ORDER BY batch DESC, name ASC";
 $alumni_result = $conn->query($alumni_sql);
 ?>
 
-<h2 class="mb-4 border-bottom pb-2">Distinguished Alumni</h2>
+<h2 class="mt-5 mb-4 border-bottom pb-2">Distinguished Alumni</h2>
 
 <div class="row row-cols-1 row-cols-md-4 g-4">
     <?php

@@ -6,7 +6,7 @@ $faculty_sql = "SELECT * FROM faculty_members ORDER BY `order` ASC, name ASC";
 $faculty_result = $conn->query($faculty_sql);
 ?>
 
-<h2 class="mb-4 border-bottom pb-2">Our Faculty</h2>
+<h2 class="mt-5 mb-4 border-bottom pb-2">Our Faculty</h2>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <?php
