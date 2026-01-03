@@ -237,31 +237,19 @@ function render_menu_item($item, $level = 0) {
         <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Urgent Alert</h5>
         <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('urgentAlertModal').style.display='none'"></button>
       </div>
-      <div class="modal-body p-0">
-        <div id="urgentAlertCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <?php foreach($active_alerts as $index => $alert): ?>
-                <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?> p-4 text-center">
-                    <div class="lead fw-bold">
-                        <?php if(!empty($alert['link'])): ?>
-                            <a href="<?php echo htmlspecialchars($alert['link']); ?>" class="text-dark text-decoration-underline"><?php echo nl2br(htmlspecialchars($alert['message'])); ?></a>
-                        <?php else: ?>
-                            <?php echo nl2br(htmlspecialchars($alert['message'])); ?>
-                        <?php endif; ?>
-                    </div>
+      <div class="modal-body p-4">
+        <div class="list-group list-group-flush">
+            <?php foreach($active_alerts as $index => $alert): ?>
+            <div class="list-group-item border-0 text-center <?php echo $index > 0 ? 'border-top' : ''; ?> py-3">
+                <div class="lead fw-bold">
+                    <?php if(!empty($alert['link'])): ?>
+                        <a href="<?php echo htmlspecialchars($alert['link']); ?>" class="text-dark text-decoration-underline"><?php echo nl2br(htmlspecialchars($alert['message'])); ?></a>
+                    <?php else: ?>
+                        <?php echo nl2br(htmlspecialchars($alert['message'])); ?>
+                    <?php endif; ?>
                 </div>
-                <?php endforeach; ?>
             </div>
-            <?php if(count($active_alerts) > 1): ?>
-            <button class="carousel-control-prev" type="button" data-bs-target="#urgentAlertCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#urgentAlertCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-            <?php endif; ?>
+            <?php endforeach; ?>
         </div>
       </div>
     </div>
