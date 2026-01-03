@@ -232,18 +232,7 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
     </div>
 </div>
 
-<!-- Stats / Badges Section (Bottom) -->
-<?php if($stats_result && $stats_result->num_rows > 0): ?>
-<div class="row mb-5 pt-4">
-    <div class="col-12">
-        <div class="row g-4 justify-content-center">
-            <?php
-            // Reset pointer if reused or fetch again. Since we used fetch_assoc loop above, the pointer is at end.
-            // But wait, we deleted the loop above. So pointer is at start. Correct.
-            // Check if stats_result is valid
-            if ($stats_result) $stats_result->data_seek(0);
-            while($stat = $stats_result->fetch_assoc()): ?>
-            <div class="col-md-2 col-sm-4 col-6">
+            <div class="col-md-3 col-sm-6 col-6">
                 <div class="stat-card">
                     <i class="<?php echo htmlspecialchars($stat['icon']); ?>"></i>
                     <span class="count"><?php echo htmlspecialchars($stat['number']); ?></span>
