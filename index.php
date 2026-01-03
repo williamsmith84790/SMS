@@ -36,10 +36,27 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
 
 <style>
     /* Stats Section */
-    .stat-card { text-align: center; padding: 60px 30px; background: #fff; border: 1px solid #eee; transition: 0.3s; height: 100%; }
-    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: var(--secondary-color); }
-    .stat-card i { font-size: 5rem; color: #777; margin-bottom: 25px; display: block; }
-    .stat-card .count { font-size: 4rem; font-weight: 700; color: #000; margin-bottom: 10px; display: block; }
+    .stat-card {
+        text-align: center;
+        padding: 40px;
+        background: #fff;
+        border: 1px solid #eee;
+        transition: 0.3s;
+        height: 100%;
+        aspect-ratio: 1/1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        border-color: var(--secondary-color);
+    }
+    .stat-card i { font-size: 5rem; color: #777; margin-bottom: 20px; display: block; }
+    .stat-card .count { font-size: 4rem; font-weight: 700; color: #000; margin-bottom: 10px; display: block; line-height: 1; }
     .stat-card .label { color: #666; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
     /* Events Section */
