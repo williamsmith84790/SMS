@@ -42,7 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return $existing_path;
     }
 
-    $logo_path = handle_upload('site_logo', isset($settings['site_logo']) ? $settings['site_logo'] : '', 'logo', $target_dir);
+    // Handle Logo Removal
+    $current_logo = isset($settings['site_logo']) ? $settings['site_logo'] : '';
+    if (isset($_POST['remove_logo']) && $_POST['remove_logo'] == '1') {
+        $logo_path = '';
+    } else {
+        $logo_path = handle_upload('site_logo', $current_logo, 'logo', $target_dir);
+    }
+
     $f1_img_path = handle_upload('feature_1_image', isset($settings['feature_1_image']) ? $settings['feature_1_image'] : '', 'f1', $target_dir);
     $f2_img_path = handle_upload('feature_2_image', isset($settings['feature_2_image']) ? $settings['feature_2_image'] : '', 'f2', $target_dir);
 
@@ -121,8 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="mb-3">
                                 <label class="form-label">Site Logo</label>
                                 <?php if(isset($settings['site_logo']) && $settings['site_logo']): ?>
-                                    <div class="mb-2 p-2 bg-light border rounded">
+                                    <div class="mb-2 p-2 bg-light border rounded d-flex align-items-center justify-content-between">
                                         <img src="../<?php echo $settings['site_logo']; ?>" height="60">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="remove_logo" value="1" id="remove_logo">
+                                            <label class="form-check-label text-danger" for="remove_logo">Remove Logo</label>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
                                 <input type="file" name="site_logo" class="form-control">

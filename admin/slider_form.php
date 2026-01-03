@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="mb-2"><img src="../<?php echo $slider['image']; ?>" width="100%"></div>
                         <?php endif; ?>
                         <input type="file" name="image" class="form-control" <?php echo $id ? '' : 'required'; ?>>
+                        <small class="text-muted">Recommended size: 1920x500px</small>
                     </div>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                     <a href="slider_list.php" class="btn btn-secondary">Cancel</a>
