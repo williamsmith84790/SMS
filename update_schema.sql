@@ -4,6 +4,12 @@ ALTER TABLE urgent_alerts ADD COLUMN link VARCHAR(255) DEFAULT NULL;
 -- Add link column to notices
 ALTER TABLE notices ADD COLUMN link VARCHAR(255) DEFAULT NULL;
 
+-- Add link column to ticker_items
+ALTER TABLE ticker_items ADD COLUMN link VARCHAR(255) DEFAULT NULL;
+
+-- Add institution column to student_results
+ALTER TABLE student_results ADD COLUMN institution VARCHAR(255) DEFAULT NULL;
+
 -- Add Gallery to Life at Campus menu
 -- Assumes 'Life at Campus' has ID 20.
 -- We'll check if it exists first to avoid duplicates, but standard SQL doesn't have IF NOT EXISTS for INSERT easily without procedures.

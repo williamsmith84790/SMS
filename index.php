@@ -63,7 +63,7 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
     .event-date-box .month { font-size: 0.75rem; text-transform: uppercase; }
 
     /* Vertical Marquee for Notices */
-    .marquee-vertical { height: 300px; overflow: hidden; position: relative; }
+    .marquee-vertical { flex-grow: 1; overflow: hidden; position: relative; }
     .marquee-vertical .list-group { position: absolute; width: 100%; animation: marquee-up 15s linear infinite; }
     .marquee-vertical:hover .list-group { animation-play-state: paused; }
     @keyframes marquee-up {
@@ -138,7 +138,7 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 mb-3">
         <div class="card shadow-sm h-100">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0"><i class="fas fa-bullhorn"></i> Notice Board</h5>
@@ -278,7 +278,7 @@ $f2_img = isset($settings['feature_2_image']) && !empty($settings['feature_2_ima
             // Check if stats_result is valid
             if ($stats_result) $stats_result->data_seek(0);
             while($stat = $stats_result->fetch_assoc()): ?>
-            <div class="col-md-2 col-sm-4 col-6">
+            <div class="col-md-3 col-sm-6 col-6">
                 <div class="stat-card">
                     <i class="<?php echo htmlspecialchars($stat['icon']); ?>"></i>
                     <span class="count"><?php echo htmlspecialchars($stat['number']); ?></span>
